@@ -1,4 +1,4 @@
-# KU Friend Matcher Site
+# SCU Friend Matcher Site
 ![image](https://github.com/SSMYJAY/demo-repository/assets/89928533/df5c760f-6106-409a-b1fc-1079efaa2ade)
 
 # Installation Steps:
@@ -23,9 +23,13 @@ Successfully connected to the database
 for the nodejs service, then the project has been run successfully.
 
 # Docker Instructions:
-Run from project root directory
-Build: docker build -t bc-back -f Dockerfile.dockerfile . --no-cache
-Run: docker run -v ./backend:/usr/src/app/backend -p 443:443 -e MYSQL_HOST_IP=mysql --name backend-nodejs -it bc-back
+Run from project root directory:
+chmod 777 database (first time)
+docker compose up
+If the terminal outputs  
+app listening at https://localhost:443  
+Successfully connected to the database  
+for the nodejs service, then the project has been run successfully.
 
-Get image: docker pull mysql:5.7
-Run: docker run -e MYSQL_HOST=localhost -e MYSQL_ROOT_PASSWORD=4TASEQ1Eu3S -e MYSQL_DATABASE=db_ss -p 3306:3306 --name mysql mysql:5.7
+If something breaks and you need to remove and rebuild the containers, run:
+docker compose down -v
