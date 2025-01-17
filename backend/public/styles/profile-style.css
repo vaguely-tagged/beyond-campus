@@ -1,0 +1,405 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+$text-color: #747373;
+$header-height: 60px;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #fbfefc;
+}
+
+header {
+  position: fixed;
+  width: 100%;
+  margin: 0;
+  top: 0;
+  box-sizing: border-box;
+  background: #842434;
+  padding: 0 50px 0 50px;
+  height: $header-height;
+  z-index: 999;
+}
+
+.container-fluid {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.site-title h1 {
+  font-size: 24px;
+  color: white;
+}
+
+.logout-button {
+  background: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+  color: black;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Add a subtle shadow */
+  transition: box-shadow 0.3s ease, background-color 0.3s ease; /* Add a smooth transition effect */
+
+  text-decoration: none; /* Remove the underline */
+}
+
+/* Change the background color and add a stronger shadow on hover */
+.logout-button:hover {
+  background: #f0f0f0; /* Change to your desired hover background color */
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5); /* Enhance the shadow on hover */
+}
+
+a {
+  text-decoration: none;
+}
+
+menu {
+  width: 260px;
+  position: fixed;
+  padding: 0;
+  z-index: 10;
+  height: calc(100% - 100px);
+  overflow-y: auto;
+  background: rgba(214, 214, 212, 0.2);
+  box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.2);
+
+  top: 59px;
+  left: 50px;
+  margin: 0;
+  overflow-y: auto;
+}
+
+menu ul {
+  list-style: none;
+  clear: both;
+  float: unset;
+}
+
+menu > div {
+  padding: 10px;
+}
+
+#filter_text {
+  width: 100%;
+  margin: 0;
+}
+
+menu .admin-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+menu .admin-menu li:first-child {
+  border-top: 1px solid rgba(216, 175, 131, 0.6);
+}
+
+menu .admin-menu li {
+  clear: both;
+  display: block;
+  padding: 10px;
+  margin: 0;
+  color: #fff;
+  font-size: 14px;
+  letter-spacing: 1px;
+  background: #842434;
+  border-bottom: 1px solid rgba(217, 177, 135, 0.6);
+}
+
+menu .user-profile {
+  width: 100%;
+  padding: 20px;
+  margin-top: 10px;
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+menu .profile-pic {
+  width: 80px;
+}
+
+menu .profile-pic img {
+  width: 80px;
+  height: 80px;
+  border-radius: 70%;
+  border: 2px solid #d8af83;
+}
+
+menu .user-info {
+  width: 100%;
+}
+
+menu .profile-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+menu .profile-menu li {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+menu .profile-menu a {
+  padding: 10px;
+  color: #8be5b1;
+}
+
+menu .profile-menu a:hover,
+menu .profile-menu a:active {
+  color: #d8af83;
+}
+
+menu .username {
+  font-size: 20px;
+  text-align: center;
+  color: #071b0e;
+  letter-spacing: 1px;
+}
+
+menu .filter-form {
+  padding: 10px;
+}
+
+main {
+  position: relative;
+  width: calc(100% - 400px);
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  padding: 20px;
+  margin-left: 310px;
+  margin-top: $header-height;
+  float: left;
+  padding-bottom: $header-height;
+  background: #fbfefc;
+}
+
+section {
+  padding: 20px;
+  margin: 60px 0;
+}
+
+.hashtags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.hashtag {
+  background-color: white;
+  border: 2px solid #842434;
+  color: #842434;
+  padding: 5px 10px;
+  border-radius: 25px;
+  font-weight: bold;
+}
+
+#bioTextarea {
+  width: 50%; /* Use 100% width for a cleaner look */
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 2px solid #842434; /* Red border color */
+  border-radius: 8px; /* Rounded corners */
+  font-size: 16px; /* Adjust font size as needed */
+  color: #842434; /* Text color */
+}
+
+.bio-button-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.bio-button {
+  background-color: #842434;
+  color: white;
+  font-size: 14px;
+  padding: 8px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.bio-button:hover {
+  background-color: #a63c4c; /* Lighter red on hover for buttons */
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+$text-color: #747373;
+$header-height: 60px;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #fbfefc;
+}
+
+header {
+  position: fixed;
+  width: 100%;
+  margin: 0;
+  top: 0;
+  box-sizing: border-box;
+  background: #842434;
+  padding: 0 50px 0 50px;
+  height: $header-height;
+  z-index: 999;
+}
+
+.container-fluid {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.site-title h1 {
+  font-size: 24px;
+  color: white;
+}
+
+.logout-button {
+  background: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+  color: black;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Add a subtle shadow */
+  transition: box-shadow 0.3s ease, background-color 0.3s ease; /* Add a smooth transition effect */
+
+  text-decoration: none; /* Remove the underline */
+}
+
+/* Change the background color and add a stronger shadow on hover */
+.logout-button:hover {
+  background: #f0f0f0; /* Change to your desired hover background color */
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5); /* Enhance the shadow on hover */
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Add your CSS styles here */
+.friends {
+  margin-bottom: 20px;
+}
+
+.user-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 75px;
+}
+
+.user-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  width: 250px;
+  display: inline-block;
+  vertical-align: top;
+  background-color: #fff;
+  text-align: center;
+  padding: 20px;
+  transition: transform 0.2s;
+}
+
+.user-card:hover {
+  transform: translateY(-5px);
+}
+
+.user-card img {
+  width: 100px;
+  height: 100px;
+  border: 2px solid #d8af83;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.user-card h2 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.user-card p {
+  margin: 10px 0;
+}
+
+.add-button-wrapper,
+.remove-button-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  box-sizing: border-box;
+  margin-top: 15px;
+}
+
+.add-friend-button,
+.remove-friend-button {
+  background-color: #842434;
+  display: none;
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  padding: 12px 24px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.add-friend-button:hover,
+.remove-friend-button:hover {
+  background-color: #741424;
+}
+
+.hashtag-list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+.hashtag {
+  background-color: white;
+  border: 2px solid #842434;
+  color: #842434;
+  padding: 5px 10px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: bold;
+}
