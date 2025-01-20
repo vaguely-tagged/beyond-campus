@@ -5,7 +5,7 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_HOST: localhost
-      MYSQL_ROOT_PASSWORD: 4T3ASEQ1Eu3S
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: db_ss
     volumes:
       - mysql_data:/var/lib/mysql
@@ -13,7 +13,7 @@ services:
     ports:
       - "127.0.0.1:3306:3306"
     healthcheck:
-        test: ["CMD", 'mysqladmin', 'ping', '-p4T3ASEQ1Eu3S']
+        test: ["CMD", 'mysqladmin', 'ping', '-p${MYSQL_PASSWORD}']
         timeout: 10s
         retries: 3
 
@@ -25,6 +25,7 @@ services:
       - "443:443"
     environment:
       MYSQL_HOST_IP: mysql
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - nodejs_data:/var/lib/nodejs
       - ./backend:/usr/src/app/backend

@@ -1,7 +1,7 @@
 module.exports = {
   HOST: "localhost",
   USER: "root",
-  PASSWORD: "4T3ASEQ1Eu3S",
+  PASSWORD: process.env.MYSQL_PASSWORD,
   DB: "db_ss",
   connectTimeout: 60000,
 };
