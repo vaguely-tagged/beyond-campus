@@ -25,7 +25,7 @@ services:
       - "443:443"
     environment:
       MYSQL_HOST_IP: mysql
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    env_file: .env
     volumes:
       - nodejs_data:/var/lib/nodejs
       - ./backend:/usr/src/app/backend
