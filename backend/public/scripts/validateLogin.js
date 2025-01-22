@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!isValid) {
       warningText.innerText = warningMessage;
     } else {
+
       const formData = {
         email,
         password,
@@ -51,7 +52,9 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((data) => {
           if (data.success) {
             if (window.confirm("Login succesful!")) {
-              window.location.href = "/";
+              console.log(data.perm);
+              if (data.perm) window.location.href="/auth/admin"
+              else window.location.href = "/";
             } else {
               window.location.href = "/";
             }

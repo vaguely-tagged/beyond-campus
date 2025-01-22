@@ -5,6 +5,7 @@ const path = require("path");
 const FileStore = require("session-file-store")(session);
 const https = require("https");
 const fs = require("fs");
+const db = require("./models/db.js");
 
 var auth = require("./utils/auth.js");
 var authCheck = require("./utils/authCheck.js");
@@ -123,3 +124,11 @@ https
   .listen(port, () => {
     console.log(`app listening at https://localhost:${port}`);
   });
+
+db.query(
+  "REPLACE INTO user (username, password, email, major, year, gender, registration_date, permissions) VALUES(?,?,?,?,?,?,?,?)",
+  ["ADMIN", process.env.ADMIN_PASSWORD, process.env.ADMIN_USERNAME, 'null', 2025, 'Other', '2025-01-01', 1],
+  function (error, data) {
+    if (error) throw error;
+  }
+);
