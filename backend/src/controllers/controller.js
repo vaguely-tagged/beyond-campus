@@ -285,6 +285,39 @@ exports.getPotentialFriends = (req, res) => {
   });
 };
 
+exports.requestFriend = (req, res) => {
+  console.log("requesting");
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  if (!req.session.nickname) {
+    return res.status(400).json({ success: false, message: "no user" });
+  }
+  Friends.requestFriend(
+    req.session.nickname,
+    req.body.friend_user_id,
+    (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found user with id ${req.session.nickname}.`,
+          });
+        } else {
+          res.status(500).send({
+            message: "Error requesting friend of user " + req.session.nickname,
+          });
+        }
+      } else
+        res.send({
+          success: true,
+          friend_user_id: req.body.friend_user_id,
+        });      
+    }
+  )
+}
+
 exports.insertFriend = (req, res) => {
   const errors = validationResult(req);
 

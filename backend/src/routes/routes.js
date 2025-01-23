@@ -77,7 +77,7 @@ module.exports = (app) => {
     authCheckNext.isOwner,
     auth,
     check("friend_user_id").notEmpty().isInt().toInt(),
-    basic.insertFriend
+    basic.requestFriend
   );
   // delete friend of current user
   router.delete(
