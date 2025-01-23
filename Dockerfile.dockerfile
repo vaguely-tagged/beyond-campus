@@ -48,4 +48,5 @@ RUN chmod 777 download.sh && ./download.sh
 EXPOSE 443
 
 WORKDIR /usr/src/app/backend/src/
+RUN chmod +x sessions
 CMD node server.js
