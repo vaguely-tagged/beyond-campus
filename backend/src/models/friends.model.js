@@ -108,9 +108,11 @@ Friends.insertFriend = (user_id, friend_user_id, result) => {
 };
 
 Friends.deleteFriend = (user_id, friend_user_id, result) => {
+  if (user_id < friend_user_id) var uid1 = user_id, uid2 = friend_user_id;
+  else var uid1 = friend_user_id, uid2 = user_id;
   db.query(
-    "DELETE FROM friends WHERE (user_id = ? AND friend_user_id = ?) OR (user_id=? AND friend_user_id=?);",
-    [user_id, friend_user_id, friend_user_id, user_id],
+    "DELETE FROM friends WHERE user_id = ? AND friend_user_id = ?;",
+    [uid1, uid2],
     (err, res) => {
       if (err) {
         // console.log("error: ", err);
