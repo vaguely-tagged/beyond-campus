@@ -259,8 +259,43 @@ exports.getPotentialFriends = (req, res) => {
   });
 };
 
+exports.requestFriend = (req, res) => {
+  console.log("requesting");
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  if (!req.session.nickname) {
+    return res.status(400).json({ success: false, message: "no user" });
+  }
+  Friends.requestFriend(
+    req.session.nickname,
+    req.body.friend_user_id,
+    (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found user with id ${req.session.nickname}.`,
+          });
+        } else {
+          res.status(500).send({
+            message: "Error requesting friend of user " + req.session.nickname,
+          });
+        }
+      } else
+        res.send({
+          success: true,
+          friend_user_id: req.body.friend_user_id,
+        });      
+    }
+  )
+}
+
+=======
 // Insert friend (direct add)
 exports.insertFriend = (req, res) => {
+  console.log(req.body);
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -287,6 +322,38 @@ exports.insertFriend = (req, res) => {
         friend_user_id: req.body.friend_user_id,
       });
   });
+};
+
+exports.rejectRequest = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  if (!req.session.nickname) {
+    return res.status(400).json({ success: false, message: "no user" });
+  }
+  Friends.rejectRequest(
+    req.session.nickname,
+    req.body.request_id,
+    (err, data) => {
+      if (err) {
+        if (err.kind == "not_found") {
+          res.status(404).send({
+            message: `Not found user with id ${req.session.nickname}.`,
+          });
+        } else {
+          res.status(500).send({
+            message: `Error rejecting request of user ${req.session.nickname}`,
+          });
+        }
+    } else
+      res.send({
+        success: true,
+        request_id: req.body.req_id,
+      });
+    }
+  );
 };
 
 // Delete friend
@@ -381,5 +448,25 @@ exports.getPendingRequests = (req, res) => {
   Friends.getPendingRequests(user_id, (err, result) => {
     if (err) return res.status(500).send({ error: "Failed to fetch requests" });
     res.status(200).send(result);
+  });
+};
+
+exports.getCurrentUserRequests = (req, res) => {
+  Friends.getUserRequests(req.session.nickname, (err, data) => {
+    if (err) {
+      if (err.kind == "not_found") {
+        res.status(404).send({
+          message: `Not found requests with user id ${req.session.nickname}.`,
+      });
+      } else {
+        res.status(500).send({
+          message: `Error retrieving requests of user id ${req.session.nickname}.`,
+        });
+      }
+    } else
+      res.send({
+        success:true,
+        data:data,
+      });
   });
 };

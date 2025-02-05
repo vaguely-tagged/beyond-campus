@@ -129,7 +129,7 @@ module.exports = (app) => {
     authCheckNext.isOwner,
     auth,
     check("friend_user_id").notEmpty().isInt().toInt(),
-    basic.insertFriend
+    basic.requestFriend
   );
 
   // delete friend of current user
@@ -140,6 +140,30 @@ module.exports = (app) => {
     check("friend_user_id").notEmpty().isInt().toInt(),
     basic.deleteFriend
   );
+
+  // get requests
+  router.get(
+    "/requests",
+    authCheckNext.isOwner,
+    auth,
+    basic.getCurrentUserRequests
+  );
+  // accept request
+  router.post(
+    "/requests",
+    authCheckNext.isOwner,
+    auth,
+    check("friend_user_id").notEmpty().isInt().toInt(),
+    basic.insertFriend
+  );
+  // reject requests
+  router.delete(
+    "/requests",
+    authCheckNext.isOwner,
+    auth,
+    check("request_id").notEmpty().isInt().toInt(),
+    basic.rejectRequest
+  )
 
   app.use("/api", router);
 };
