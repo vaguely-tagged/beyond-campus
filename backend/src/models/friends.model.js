@@ -24,6 +24,26 @@ Friends.getUserFriends = (user_id, result) => {
   );
 };
 
+Friends.getUserRequests = (user_id, result) => {
+  db.query(
+    "SELECT user_id, username, bio, major, year FROM user WHERE user_id IN (SELECT sender FROM friendrequest WHERE receiver=?);",
+    [user_id],
+    (err,res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.length) {
+        result(null, res);
+        return;
+      } else {
+        result({ kind:"not_found"}, null);
+      }
+    }
+  )
+}
+
 Friends.requestFriend = (user_id, friend_user_id, result) => {
   if (user_id < friend_user_id) var uid1 = user_id, uid2 = friend_user_id;
   else var uid1 = friend_user_id, uid2 = user_id;
@@ -73,14 +93,13 @@ Friends.requestFriend = (user_id, friend_user_id, result) => {
       );
     }
   );
-
 }
 
 Friends.insertFriend = (user_id, friend_user_id, result) => {
   if (user_id < friend_user_id) var uid1 = user_id, uid2 = friend_user_id;
   else var uid1 = friend_user_id, uid2 = user_id;
   db.query(
-    "INSERT INTO friends (user_id, friend_user_id) VALUES (?,?) ON DUPLICATE KEY UPDATE user_id = user_id;",
+    "REPLACE INTO friends (user_id, friend_user_id) VALUES (?,?) ON DUPLICATE KEY UPDATE user_id = user_id;",
     [uid1, uid2],
     (err, res) => {
       if (err) {
@@ -106,6 +125,22 @@ Friends.insertFriend = (user_id, friend_user_id, result) => {
     }
   );
 };
+
+Friends.rejectRequest = (user_id, request_id, result) => {
+  db.query(
+    "DELETE FROM friendrequest WHERE sender=? AND receiver=?;",
+    [request_id, user_id],
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      } else {
+        result(null, null);
+        return;
+      }
+    }
+  );
+}
 
 Friends.deleteFriend = (user_id, friend_user_id, result) => {
   if (user_id < friend_user_id) var uid1 = user_id, uid2 = friend_user_id;

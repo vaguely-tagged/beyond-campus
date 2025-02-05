@@ -23,7 +23,27 @@ function createUserCard(user) {
   return card;
 }
 
+function createRequestCard(user) {
+  console.log(user);
+  const card = document.createElement("div");
+  card.className = "user-card";
+  card.innerHTML = `
+          <a href="/profile?user_id=${user.user_id}"  style="color: black;"><img src="https://cdn.vectorstock.com/i/preview-1x/08/19/gray-photo-placeholder-icon-design-ui-vector-35850819.jpg" alt="${user.username}">
+          <h2>${user.username}</h2></a>
+          <p><strong>Major:</strong> ${user.major}</p>
+          <p><strong>Year:</strong> ${user.year}</p>
+          <p><strong>Gender:</strong> ${user.gender}</p>
+          <div class="hashtag-list class${user.user_id}">
+          </div>
+          <button class="request-button" id="reject">Reject Request</button>
+          <button class="request-button" id="accept">Accept Request</button>
+      `;
+
+  return card;
+}
+
 const userCardsContainer = document.querySelector(".friends");
+const requestContainer = document.querySelector(".requests");
 
 window.addEventListener("load", () => {
   // Get the JWT token from the cookie
@@ -124,6 +144,56 @@ window.addEventListener("load", () => {
                 });
             }
           });
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching hashtag data:", error);
+      });
+
+    fetch("/api/requests", {
+      method: "GET",
+      headers,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const requestsData = data.data;
+        for (const requestData of requestsData) {
+          const requestCard = createRequestCard(requestData);
+          requestContainer.appendChild(requestCard);
+          
+          
+          const rejectFriendButton = requestCard.querySelector(
+            "#reject"
+          );
+          rejectFriendButton.addEventListener("click", () => {
+            // Make a DELETE fetch request with user_id as the request body
+            if (
+              window.confirm(
+                `Are you sure you want to reject ${requestData.username}'s friend request?`
+              )
+            ) {
+              const req_id = requestData.user_id;
+              fetch(`/api/requests`, {
+                method: "DELETE",
+                headers,
+                body: JSON.stringify({ request_id: req_id }),
+              })
+                .then((response) => response.json())
+                .then((result) => {
+                  if (window.confirm("Request rejected!")) {
+                    location.reload();
+                  } else {
+                    location.reload();
+                  }
+
+                  // You can add additional logic here, like showing a confirmation message.
+                })
+                .catch((error) => {
+                  console.error("Error rejecting request:", error);
+                });
+            }
+          });
+          
         }
       })
       .catch((error) => {

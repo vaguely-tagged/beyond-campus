@@ -88,5 +88,21 @@ module.exports = (app) => {
     basic.deleteFriend
   );
 
+  // get requests
+  router.get(
+    "/requests",
+    authCheckNext.isOwner,
+    auth,
+    basic.getCurrentUserRequests
+  );
+  // reject requests
+  router.delete(
+    "/requests",
+    authCheckNext.isOwner,
+    auth,
+    check("request_id").notEmpty().isInt().toInt(),
+    basic.rejectRequest
+  )
+
   app.use("/api", router);
 };
