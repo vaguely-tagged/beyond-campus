@@ -292,7 +292,6 @@ exports.requestFriend = (req, res) => {
   )
 }
 
-=======
 // Insert friend (direct add)
 exports.insertFriend = (req, res) => {
   console.log(req.body);
