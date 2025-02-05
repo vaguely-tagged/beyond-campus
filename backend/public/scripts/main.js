@@ -24,7 +24,6 @@ function createUserCard(user) {
 }
 
 function createRequestCard(user) {
-  console.log(user);
   const card = document.createElement("div");
   card.className = "user-card";
   card.innerHTML = `
@@ -161,7 +160,7 @@ window.addEventListener("load", () => {
           const requestCard = createRequestCard(requestData);
           requestContainer.appendChild(requestCard);
           
-          
+          // reject button
           const rejectFriendButton = requestCard.querySelector(
             "#reject"
           );
@@ -194,6 +193,26 @@ window.addEventListener("load", () => {
             }
           });
           
+          // accept button
+          const acceptFriendButton = requestCard.querySelector(
+            "#accept"
+          );
+          acceptFriendButton.addEventListener("click", () => {
+            const req_id = requestData.user_id;
+            fetch(`/api/requests`, {
+              method: "POST",
+              headers,
+              body: JSON.stringify({ friend_user_id: req_id }),              
+            })
+              .then((response => response.json()))
+              .then((result) => {
+                window.confirm("Request accepted!");
+                location.reload();
+              })
+              .catch((error) => {
+                console.error("Error accepting request:", error);
+              })
+          });
         }
       })
       .catch((error) => {

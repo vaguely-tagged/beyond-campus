@@ -99,7 +99,7 @@ Friends.insertFriend = (user_id, friend_user_id, result) => {
   if (user_id < friend_user_id) var uid1 = user_id, uid2 = friend_user_id;
   else var uid1 = friend_user_id, uid2 = user_id;
   db.query(
-    "REPLACE INTO friends (user_id, friend_user_id) VALUES (?,?) ON DUPLICATE KEY UPDATE user_id = user_id;",
+    "INSERT INTO friends (user_id, friend_user_id) VALUES (?,?) ON DUPLICATE KEY UPDATE user_id = user_id;",
     [uid1, uid2],
     (err, res) => {
       if (err) {

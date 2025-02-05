@@ -95,6 +95,14 @@ module.exports = (app) => {
     auth,
     basic.getCurrentUserRequests
   );
+  // accept request
+  router.post(
+    "/requests",
+    authCheckNext.isOwner,
+    auth,
+    check("friend_user_id").notEmpty().isInt().toInt(),
+    basic.insertFriend
+  );
   // reject requests
   router.delete(
     "/requests",
