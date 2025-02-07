@@ -6,6 +6,7 @@ const Friends = require("../models/friends.model");
 
 dotenv.config();
 
+// Find current user
 exports.findCurrentUser = (req, res) => {
   User.findById(req.session.nickname, (err, data) => {
     if (err) {
@@ -33,6 +34,7 @@ exports.findCurrentUser = (req, res) => {
   });
 };
 
+// Find a user
 exports.findUser = (req, res) => {
   const errors = validationResult(req);
 
@@ -65,6 +67,7 @@ exports.findUser = (req, res) => {
   });
 };
 
+// Update user bio
 exports.updateBio = (req, res) => {
   const errors = validationResult(req);
 
@@ -93,6 +96,7 @@ exports.updateBio = (req, res) => {
   });
 };
 
+// Get user hashtags
 exports.getUserHashtags = (req, res) => {
   if (!req.session.nickname) {
     return res.status(400).json({ success: false, message: "no user" });
@@ -117,6 +121,7 @@ exports.getUserHashtags = (req, res) => {
   });
 };
 
+// Get other user's hashtags
 exports.getOtherUserHashtags = (req, res) => {
   const errors = validationResult(req);
 
@@ -127,12 +132,12 @@ exports.getOtherUserHashtags = (req, res) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found hashtag with user id ${req.session.nickname}.`,
+          message: `Not found hashtag with user id ${req.query.user_id}.`,
         });
       } else {
         res.status(500).send({
           message:
-            "Error retrieving hashtag with user id " + req.session.nickname,
+            "Error retrieving hashtag with user id " + req.query.user_id,
         });
       }
     } else
@@ -143,6 +148,7 @@ exports.getOtherUserHashtags = (req, res) => {
   });
 };
 
+// Update user hashtags
 exports.updateUserHashtag = async (req, res) => {
   const errors = validationResult(req);
 
@@ -155,55 +161,30 @@ exports.updateUserHashtag = async (req, res) => {
 
   const selectedTags = req.body.selectedValues;
 
-  // Function to delete hashtags
   const deleteHashtags = (selectedTag) => {
     return new Promise((resolve, reject) => {
-      UserHashtag.deleteHashtag(
-        req.session.nickname,
-        selectedTag,
-        (err, data) => {
-          if (err) {
-            if (err.kind === "not_found") {
-            } else {
-              reject({
-                status: 500,
-                message:
-                  "Error deleting hashtag of user " + req.session.nickname,
-              });
-            }
-          } else {
-            resolve();
-          }
+      UserHashtag.deleteHashtag(req.session.nickname, selectedTag, (err, data) => {
+        if (err && err.kind !== "not_found") {
+          reject(err);
+        } else {
+          resolve();
         }
-      );
+      });
     });
   };
 
-  // Function to insert hashtags
   const insertHashtags = (selectedTag) => {
     return new Promise((resolve, reject) => {
-      UserHashtag.insertHashtag(
-        req.session.nickname,
-        selectedTag,
-        (err, data) => {
-          if (err) {
-            if (err.kind === "not_found") {
-            } else {
-              reject({
-                status: 500,
-                message:
-                  "Error inserting hashtag of user " + req.session.nickname,
-              });
-            }
-          } else {
-            resolve();
-          }
+      UserHashtag.insertHashtag(req.session.nickname, selectedTag, (err, data) => {
+        if (err && err.kind !== "not_found") {
+          reject(err);
+        } else {
+          resolve();
         }
-      );
+      });
     });
   };
 
-  // Perform delete and insert operations
   try {
     for (const selectedTag of selectedTags) {
       await deleteHashtags(selectedTag);
@@ -211,17 +192,13 @@ exports.updateUserHashtag = async (req, res) => {
     for (const selectedTag of selectedTags) {
       await insertHashtags(selectedTag);
     }
-    res.send({
-      success: true,
-    });
+    res.send({ success: true });
   } catch (error) {
-    console.error(error);
-    res.status(500).send({
-      message: "Internal server error",
-    });
+    res.status(500).send({ message: "Internal server error" });
   }
 };
 
+// Get potential friends
 exports.getPotentialFriends = (req, res) => {
   const errors = validationResult(req);
 
@@ -253,12 +230,10 @@ exports.getPotentialFriends = (req, res) => {
         });
       }
     } else {
-      // Create an object to store users and their common tag counts
       let userCommonTagCounts = {};
 
       const userHashtags = data;
 
-      // Iterate through the tags
       tags.forEach((tag) => {
         userHashtags.forEach((userHashtag) => {
           if (userHashtag.tag_number === tag) {
@@ -278,7 +253,6 @@ exports.getPotentialFriends = (req, res) => {
         });
       });
 
-      // Convert the object into an array of userCommonTagCounts
       const resultArray = Object.values(userCommonTagCounts);
 
       res.json({ success: true, data: resultArray });
@@ -286,9 +260,9 @@ exports.getPotentialFriends = (req, res) => {
   });
 };
 
-exports.insertFriend = (req, res) => {
+exports.requestFriend = (req, res) => {
+  console.log("requesting");
   const errors = validationResult(req);
-
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
@@ -296,7 +270,7 @@ exports.insertFriend = (req, res) => {
   if (!req.session.nickname) {
     return res.status(400).json({ success: false, message: "no user" });
   }
-  Friends.insertFriend(
+  Friends.requestFriend(
     req.session.nickname,
     req.body.friend_user_id,
     (err, data) => {
@@ -307,18 +281,82 @@ exports.insertFriend = (req, res) => {
           });
         } else {
           res.status(500).send({
-            message: "Error inserting friend of user " + req.session.nickname,
+            message: "Error requesting friend of user " + req.session.nickname,
           });
         }
       } else
         res.send({
           success: true,
           friend_user_id: req.body.friend_user_id,
+        });      
+    }
+  )
+}
+
+// Insert friend (direct add)
+exports.insertFriend = (req, res) => {
+  console.log(req.body);
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  if (!req.session.nickname) {
+    return res.status(400).json({ success: false, message: "no user" });
+  }
+  Friends.insertFriend(req.session.nickname, req.body.friend_user_id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found user with id ${req.session.nickname}.`,
         });
+      } else {
+        res.status(500).send({
+          message: "Error inserting friend of user " + req.session.nickname,
+        });
+      }
+    } else
+      res.send({
+        success: true,
+        friend_user_id: req.body.friend_user_id,
+      });
+  });
+};
+
+exports.rejectRequest = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  if (!req.session.nickname) {
+    return res.status(400).json({ success: false, message: "no user" });
+  }
+  Friends.rejectRequest(
+    req.session.nickname,
+    req.body.request_id,
+    (err, data) => {
+      if (err) {
+        if (err.kind == "not_found") {
+          res.status(404).send({
+            message: `Not found user with id ${req.session.nickname}.`,
+          });
+        } else {
+          res.status(500).send({
+            message: `Error rejecting request of user ${req.session.nickname}`,
+          });
+        }
+    } else
+      res.send({
+        success: true,
+        request_id: req.body.req_id,
+      });
     }
   );
 };
 
+// Delete friend
 exports.deleteFriend = (req, res) => {
   const errors = validationResult(req);
 
@@ -329,29 +367,26 @@ exports.deleteFriend = (req, res) => {
   if (!req.session.nickname) {
     return res.status(400).json({ success: false, message: "no user" });
   }
-  Friends.deleteFriend(
-    req.session.nickname,
-    req.body.friend_user_id,
-    (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Not found user with id ${req.session.nickname}.`,
-          });
-        } else {
-          res.status(500).send({
-            message: "Error deleting friend of user " + req.session.nickname,
-          });
-        }
-      } else
-        res.send({
-          success: true,
-          friend_user_id: req.body.friend_user_id,
+  Friends.deleteFriend(req.session.nickname, req.body.friend_user_id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found user with id ${req.session.nickname}.`,
         });
-    }
-  );
+      } else {
+        res.status(500).send({
+          message: "Error deleting friend of user " + req.session.nickname,
+        });
+      }
+    } else
+      res.send({
+        success: true,
+        friend_user_id: req.body.friend_user_id,
+      });
+  });
 };
 
+// Get current user's friends
 exports.getCurrentUserFriends = (req, res) => {
   Friends.getUserFriends(req.session.nickname, (err, data) => {
     if (err) {
@@ -365,10 +400,73 @@ exports.getCurrentUserFriends = (req, res) => {
             "Error retrieving friends of user id " + req.session.nickname,
         });
       }
+    } else {
+      res.send({ success: true, data: data });
+    }
+  });
+};
+
+// Friend Request Controllers
+exports.sendFriendRequest = (req, res) => {
+  const { user_id } = req.session;
+  const { friend_user_id } = req.body;
+  Friends.sendFriendRequest(user_id, friend_user_id, (err, result) => {
+    if (err) return res.status(500).send({ error: "Failed to send request" });
+    res.status(200).send(result);
+  });
+};
+
+exports.approveFriendRequest = (req, res) => {
+  const { user_id } = req.session;
+  const { friend_user_id } = req.body;
+  Friends.approveFriendRequest(user_id, friend_user_id, (err, result) => {
+    if (err) return res.status(500).send({ error: "Failed to approve" });
+    res.status(200).send(result);
+  });
+};
+
+exports.denyFriendRequest = (req, res) => {
+  const { user_id } = req.session;
+  const { friend_user_id } = req.body;
+  Friends.denyFriendRequest(user_id, friend_user_id, (err, result) => {
+    if (err) return res.status(500).send({ error: "Failed to deny" });
+    res.status(200).send(result);
+  });
+};
+
+exports.blockUser = (req, res) => {
+  const { user_id } = req.session;
+  const { friend_user_id } = req.body;
+  Friends.blockUser(user_id, friend_user_id, (err, result) => {
+    if (err) return res.status(500).send({ error: "Failed to block" });
+    res.status(200).send(result);
+  });
+};
+
+exports.getPendingRequests = (req, res) => {
+  const { user_id } = req.session;
+  Friends.getPendingRequests(user_id, (err, result) => {
+    if (err) return res.status(500).send({ error: "Failed to fetch requests" });
+    res.status(200).send(result);
+  });
+};
+
+exports.getCurrentUserRequests = (req, res) => {
+  Friends.getUserRequests(req.session.nickname, (err, data) => {
+    if (err) {
+      if (err.kind == "not_found") {
+        res.status(404).send({
+          message: `Not found requests with user id ${req.session.nickname}.`,
+      });
+      } else {
+        res.status(500).send({
+          message: `Error retrieving requests of user id ${req.session.nickname}.`,
+        });
+      }
     } else
       res.send({
-        success: true,
-        data: data,
+        success:true,
+        data:data,
       });
   });
 };

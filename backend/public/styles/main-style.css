@@ -358,7 +358,7 @@ a {
   margin: 10px 0;
 }
 
-.remove-friend-button {
+.remove-friend-button, .request-button {
   background-color: #842434;
   color: #fff;
   border: none;
@@ -369,7 +369,7 @@ a {
   transition: background-color 0.2s;
 }
 
-.remove-friend-button:hover {
+.remove-friend-button:hover, .request-button {
   background-color: #741424;
 }
 
