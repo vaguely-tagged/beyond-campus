@@ -107,6 +107,16 @@ LOAD DATA INFILE '/var/lib/mysql-files/user.csv'
 UNLOCK TABLES;
 
 --
+-- Table structure for table `friendrequest`
+--
+
+CREATE TABLE  `friendrequest` (
+  `sender` int NOT NULL,
+  `receiver` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+--
 -- Table structure for table `userhashtag`
 --
 
