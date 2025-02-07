@@ -29,7 +29,9 @@ function createHashtag(user_id, hashtags) {
   for (const hashtag of hashtags) {
     const hashtagSpan = document.createElement("span");
     hashtagSpan.className = "hashtag";
-    hashtagSpan.textContent = "#" + category_noseparate[hashtag];
+    category_noseparate.then((d) => {
+      hashtagSpan.textContent = "#" + d[hashtag];
+    });
     hashtagsDiv.appendChild(hashtagSpan);
   }
 }

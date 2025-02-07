@@ -19,6 +19,13 @@ module.exports = (app) => {
     check("user_id").notEmpty().isInt().toInt(),
     basic.findUser
   );
+  // get all hashtags
+  router.get(
+    "/hashtags",
+    authCheckNext.isOwner,
+    auth,
+    basic.getHashtags
+  );
   // update bio of current user
   router.post(
     "/user/bio",

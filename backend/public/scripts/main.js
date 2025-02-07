@@ -76,8 +76,10 @@ window.addEventListener("load", () => {
           const hashtagsDiv = document.querySelector(".hashtags");
           const hashtagSpan = document.createElement("span");
           hashtagSpan.className = "hashtag";
+          category_noseparate.then((d) => {
           hashtagSpan.textContent =
-            "#" + category_noseparate[hashtag.tag_number];
+            "#" + d[hashtag.tag_number];
+          });
           hashtagsDiv.appendChild(hashtagSpan);
         }
       })

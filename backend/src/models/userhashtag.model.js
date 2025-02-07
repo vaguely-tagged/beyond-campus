@@ -2,6 +2,20 @@ const db = require("./db.js");
 
 const UserHashtag = function (database) {};
 
+UserHashtag.getHashtags = (result) => {
+  db.query(
+    "SELECT * FROM hashtag",
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+      result(null, res);
+      return;
+    }
+  );
+};
+
 UserHashtag.getUserHashtags = (user_id, result) => {
   db.query(
     "SELECT * FROM userhashtag WHERE user_id = ?",
