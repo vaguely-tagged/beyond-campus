@@ -25,6 +25,16 @@ exports.getSignupPage = (req, res) => {
   res.sendFile(path.resolve("../public/signup.html"));
 };
 
+exports.getAdminCenter = (req, res) => {
+  if (authCheck.isOwner(req, res)) {
+    res.sendFile(path.resolve("../public/admin.html"));
+  }
+  else {
+    res.redirect("/main");
+    return false;
+  }
+};
+
 exports.processSignup = (req, res) => {
   const result = validationResult(req);
   let data = {};
@@ -63,8 +73,8 @@ exports.processSignup = (req, res) => {
           const formattedDate = currentDate.toISOString().split("T")[0]; // Get the date portion
 
           db.query(
-            "INSERT INTO user (username, password, email, major, year, gender, registration_date) VALUES(?,?,?,?,?,?,?)",
-            [username, password_e, email, major, year, gender, formattedDate],
+            "INSERT INTO user (username, password, email, major, year, gender, registration_date, permissions) VALUES(?,?,?,?,?,?,?,?)",
+            [username, password_e, email, major, year, gender, formattedDate, 0],
             function (error, data) {
               if (error) throw error;
               return res.json({
@@ -139,6 +149,7 @@ exports.processLogin = (req, res) => {
 
             res.json({
               success: true,
+              perm: email === process.env.ADMIN_USERNAME,
               message: "Login successful!",
               token: token,
             });

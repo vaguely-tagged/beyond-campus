@@ -29,6 +29,7 @@ exports.findCurrentUser = (req, res) => {
         gender: data.gender,
         bio: data.bio,
         registration_date: data.registration_date,
+        perm: data.permissions
       });
   });
 };
