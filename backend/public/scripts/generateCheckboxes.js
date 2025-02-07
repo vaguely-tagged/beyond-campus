@@ -1,7 +1,9 @@
 import { category } from "./category.js";
 
 function createCheckboxes(category, categoryOptions, containerId) {
-  const categoryContainer = document.getElementById(containerId);
+  const categoryContainer = document.createElement("div");
+  categoryContainer.id=containerId;
+  document.getElementById("options").appendChild(categoryContainer);
 
   const keys = Object.keys(categoryOptions); // Get an array of keys
 
@@ -23,7 +25,12 @@ function createCheckboxes(category, categoryOptions, containerId) {
     categoryContainer.appendChild(label);
   }
 }
+category.then((data) => {
+  console.log(data);
+  for (let i = 0; i < data.length; ++i) createCheckboxes(String(i),data[i],String(i));
+});
 
+/*
 createCheckboxes("personality", category.personality, "personality-options");
 createCheckboxes("mbti", category.mbti, "mbti-options");
 createCheckboxes(
@@ -38,3 +45,4 @@ createCheckboxes("sports", category["sports"], "sports-options");
 createCheckboxes("hobby", category["hobby"], "hobby-options");
 createCheckboxes("journey", category["journey"], "journey-options");
 createCheckboxes("others", category["others"], "others-options");
+*/

@@ -126,7 +126,7 @@ https
   });
 
 db.query(
-  "REPLACE INTO user (username, password, email, major, year, gender, registration_date, permissions) VALUES(?,?,?,?,?,?,?,?)",
+  "INSERT IGNORE INTO user (user_id, username, password, email, major, year, gender, registration_date, permissions) VALUES(1,?,?,?,?,?,?,?,?)",
   ["ADMIN", process.env.ADMIN_PASSWORD, process.env.ADMIN_USERNAME, 'null', 2025, 'Other', '2025-01-01', 1],
   function (error, data) {
     if (error) throw error;
