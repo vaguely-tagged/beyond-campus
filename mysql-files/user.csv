@@ -1,0 +1,3 @@
+user_id,username,password,email,registration_date,bio,major,year,gender,permissions
+2,Barry Burnett,$2a$12$iAhJ0NZ1x4vTwJY4LkVO4eWTU0gWN.1wTozpplxHZUgBpNvOzc36m,bburnett@school.edu,2025-01-01,Empty,Medicine,2026,Male,0
+3,Roslyn Reeve,$2a$12$ljJs3Ue/yiFOz19MEuNiCOEdpXbC09ftjjKATrMDXMU1IFPdLDnMS,rreeve@school.edu,2025-01-01,Empty,Mathematics,2025,Female,0

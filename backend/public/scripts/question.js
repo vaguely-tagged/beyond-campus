@@ -1,10 +1,37 @@
 import { getCookie } from "./getCookie.js";
+const jwt = getCookie("jwt");
+
+window.addEventListener("load", () => {
+  if (jwt) {
+    // Include the token in the fetch request headers
+    const headers = new Headers({
+      Authorization: `${jwt}`,
+      "Content-Type": "application/json",
+    });
+    fetch("/api/user/hashtag", {
+      method: "GET",
+      headers,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        for (const hashtag of data.data) {
+          var checkbox = document.getElementById(hashtag.tag_number);
+          checkbox.checked=true;
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching hashtag data:", error);
+      });
+  } else {
+    console.error("JWT token not found in cookie");
+    window.location.href = "/auth/logout";
+  }
+});
 
 document
   .getElementById("checkbox-form")
   .addEventListener("submit", function (e) {
     e.preventDefault(); // Prevent the default form submission behavior
-    const jwt = getCookie("jwt");
 
     // Get all checked checkboxes based on the "name" attribute
     const selectedCheckboxes = document.querySelectorAll(

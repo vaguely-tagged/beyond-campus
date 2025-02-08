@@ -47,6 +47,7 @@ UserHashtag.deleteHashtag = (user_id, tag_number, result) => {
         return;
       } else {
         // console.log("rows deleted");
+        console.log(tag_number);
         result(null, null);
         return;
       }
