@@ -5,7 +5,12 @@ const path = require("path");
 const FileStore = require("session-file-store")(session);
 const https = require("https");
 const fs = require("fs");
+<<<<<<< HEAD
 const db = require("./models/db.js");
+=======
+const notificationRoutes = require("./routes/notifications");
+app.use("/api/notifications", notificationRoutes);
+>>>>>>> 4401544 (Added Notification Center backend structure)
 
 var auth = require("./utils/auth.js");
 var authCheck = require("./utils/authCheck.js");
