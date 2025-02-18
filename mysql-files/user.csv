@@ -1,3 +1,6 @@
 user_id,username,password,email,registration_date,bio,major,year,gender,permissions
 2,Barry Burnett,$2a$12$iAhJ0NZ1x4vTwJY4LkVO4eWTU0gWN.1wTozpplxHZUgBpNvOzc36m,bburnett@school.edu,2025-01-01,Empty,Medicine,2026,Male,0
 3,Roslyn Reeve,$2a$12$ljJs3Ue/yiFOz19MEuNiCOEdpXbC09ftjjKATrMDXMU1IFPdLDnMS,rreeve@school.edu,2025-01-01,Empty,Mathematics,2025,Female,0
+4,Regan Bourke,$2a$12$H5kUw5ylaH88BgGX4ffEIu2czoDkAtJMDgf9p8EWM1raNGUM25QXa,rbourke@school.edu,2025-01-01,Empty,Management,2027,Male,0
+5,Sadie Christian,$2a$12$.ToPnbUaj2ddublWab/r.O3Js3Fcsf0jAtzoTLL2wDMOZGxWFG4dq,schristian@school.edu,2025-01-01,Empty,Biology,2026,Female,0
+6,Declan Ingram,$2a$12$0kTfZ8sbJno9d7bGB1yA3es5.bF0DDOEyEj4.Q2hmXc7gkv9N6wEa,dingram@school.edu,2025-01-01,Empty,Physics,2025,Male,0

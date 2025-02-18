@@ -96,6 +96,7 @@ window.addEventListener("load", () => {
           const hashtagSpan = document.createElement("span");
           hashtagSpan.className = "hashtag";
           category_noseparate.then((d) => {
+            console.log(d);
           hashtagSpan.textContent =
             "#" + d[hashtag.tag_number];
           });
