@@ -76,51 +76,6 @@ module.exports = (app) => {
     basic.getPotentialFriends
   );
 
-  // Friend Request Routes
-  // send a friend request
-  router.post(
-    "/friend/request",
-    authCheckNext.isOwner,
-    auth,
-    check("friend_user_id").notEmpty().isInt().toInt(),
-    basic.sendFriendRequest
-  );
-
-  // approve a friend request
-  router.patch(
-    "/friend/request/approve",
-    authCheckNext.isOwner,
-    auth,
-    check("friend_user_id").notEmpty().isInt().toInt(),
-    basic.approveFriendRequest
-  );
-
-  // deny a friend request
-  router.patch(
-    "/friend/request/deny",
-    authCheckNext.isOwner,
-    auth,
-    check("friend_user_id").notEmpty().isInt().toInt(),
-    basic.denyFriendRequest
-  );
-
-  // block a user
-  router.patch(
-    "/friend/block",
-    authCheckNext.isOwner,
-    auth,
-    check("friend_user_id").notEmpty().isInt().toInt(),
-    basic.blockUser
-  );
-
-  // get pending friend requests for current user
-  router.get(
-    "/friend/requests",
-    authCheckNext.isOwner,
-    auth,
-    basic.getPendingRequests
-  );
-
   // get friends of current user
   router.get(
     "/friends",

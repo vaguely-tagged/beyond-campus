@@ -426,51 +426,6 @@ exports.getCurrentUserFriends = (req, res) => {
   });
 };
 
-// Friend Request Controllers
-exports.sendFriendRequest = (req, res) => {
-  const { user_id } = req.session;
-  const { friend_user_id } = req.body;
-  Friends.sendFriendRequest(user_id, friend_user_id, (err, result) => {
-    if (err) return res.status(500).send({ error: "Failed to send request" });
-    res.status(200).send(result);
-  });
-};
-
-exports.approveFriendRequest = (req, res) => {
-  const { user_id } = req.session;
-  const { friend_user_id } = req.body;
-  Friends.approveFriendRequest(user_id, friend_user_id, (err, result) => {
-    if (err) return res.status(500).send({ error: "Failed to approve" });
-    res.status(200).send(result);
-  });
-};
-
-exports.denyFriendRequest = (req, res) => {
-  const { user_id } = req.session;
-  const { friend_user_id } = req.body;
-  Friends.denyFriendRequest(user_id, friend_user_id, (err, result) => {
-    if (err) return res.status(500).send({ error: "Failed to deny" });
-    res.status(200).send(result);
-  });
-};
-
-exports.blockUser = (req, res) => {
-  const { user_id } = req.session;
-  const { friend_user_id } = req.body;
-  Friends.blockUser(user_id, friend_user_id, (err, result) => {
-    if (err) return res.status(500).send({ error: "Failed to block" });
-    res.status(200).send(result);
-  });
-};
-
-exports.getPendingRequests = (req, res) => {
-  const { user_id } = req.session;
-  Friends.getPendingRequests(user_id, (err, result) => {
-    if (err) return res.status(500).send({ error: "Failed to fetch requests" });
-    res.status(200).send(result);
-  });
-};
-
 exports.getCurrentUserRequests = (req, res) => {
   Friends.getUserRequests(req.session.nickname, (err, data) => {
     if (err) {
