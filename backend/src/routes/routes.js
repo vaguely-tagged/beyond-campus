@@ -27,6 +27,13 @@ module.exports = (app) => {
     auth,
     basic.getHashtags
   );
+
+  router.get(
+    "/hashtags/categories",
+    authCheckNext.isOwner,
+    auth,
+    basic.getHashtagCategories
+  );
   // update bio of current user
   router.post(
     "/user/bio",

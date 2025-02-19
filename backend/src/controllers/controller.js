@@ -117,6 +117,27 @@ exports.getHashtags = (req, res) => {
   });
 }
 
+exports.getHashtagCategories = (req,res) => {
+  UserHashtag.getHashtagCategories((err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `No hashtags found.`,
+        });
+      } else {
+        res.status(500).send({
+          message:
+            "Error retrieving hashtags",
+        });
+      }
+    } else
+      res.send({
+        success: true,
+        data: data,
+      });
+  });
+}
+
 exports.getUserHashtags = (req, res) => {
   if (!req.session.nickname) {
     return res.status(400).json({ success: false, message: "no user" });

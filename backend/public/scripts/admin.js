@@ -15,13 +15,13 @@ window.addEventListener("load", () => {
         })
         .then((response) => response.json())
         .then((userData) => {
-            console.log(userData);
             if (!userData.perm) {
                 alert("Access Denied");
                 window.location.href = "/auth/logout";
             }
             else {
                 document.body.style.visibility="visible";
+                headers.append("permissions",userData.perm);
             }
         })
         

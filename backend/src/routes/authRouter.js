@@ -21,8 +21,6 @@ module.exports = (app) => {
 
   router.get("/signup", auth.getSignupPage);
 
-  router.get("/admin", auth.getAdminCenter);
-
   router.post(
     "/login_process",
     check("email").notEmpty(),

@@ -71,6 +71,25 @@ LOAD DATA INFILE '/var/lib/mysql-files/hashtag.csv'
 UNLOCK TABLES;
 
 --
+-- Table structure for table `categories`
+--
+
+DROP TABLE IF EXISTS `categories`;
+CREATE TABLE `categories` (
+  `category_number` varchar(2) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`category_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+LOCK TABLES `categories` WRITE;
+LOAD DATA INFILE '/var/lib/mysql-files/categories.csv'
+  INTO TABLE categories
+  FIELDS TERMINATED BY ','
+  LINES TERMINATED BY '\r\n'
+  IGNORE 1 ROWS;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user`
 --
 

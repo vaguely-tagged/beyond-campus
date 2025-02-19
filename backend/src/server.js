@@ -34,6 +34,8 @@ app.use("/scripts", express.static(path.resolve("../public/scripts")));
 require("./routes/routes.js")(app);
 // routes for user authorization
 require("./routes/authRouter.js")(app);
+// routes for admin
+require("./routes/adminRouter.js")(app);
 
 app.get("/", (req, res) => {
   // if not logged in, redirect to the login page

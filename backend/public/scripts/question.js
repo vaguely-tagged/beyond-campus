@@ -15,6 +15,7 @@ window.addEventListener("load", () => {
       .then((response) => response.json())
       .then((data) => {
         for (const hashtag of data.data) {
+          console.log(hashtag.tag_number);
           var checkbox = document.getElementById(hashtag.tag_number);
           checkbox.checked=true;
         }

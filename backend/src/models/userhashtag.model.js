@@ -16,6 +16,20 @@ UserHashtag.getHashtags = (result) => {
   );
 };
 
+UserHashtag.getHashtagCategories = (result) => {
+  db.query(
+    "SELECT * FROM categories",
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+      result(null, res);
+      return;
+    }
+  )
+}
+
 UserHashtag.getUserHashtags = (user_id, result) => {
   db.query(
     "SELECT * FROM userhashtag WHERE user_id = ?",

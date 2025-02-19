@@ -61,7 +61,7 @@ window.addEventListener("load", () => {
     })
       .then((response) => response.json())
       .then((userData) => {
-        if (userData.perm) window.location.href = "/auth/admin";
+        if (userData.perm) window.location.href = "/admin/adminCenter";
 
         // Update the username and bio on the page with fetched data
         const usernameElement = document.querySelector(".username");
