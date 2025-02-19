@@ -18,7 +18,7 @@ window.addEventListener("load", () => {
             console.log(userData);
             if (!userData.perm) {
                 alert("Access Denied");
-                window.location.href = "/";
+                window.location.href = "/auth/logout";
             }
             else {
                 document.body.style.visibility="visible";
