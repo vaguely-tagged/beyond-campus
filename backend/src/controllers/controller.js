@@ -3,8 +3,15 @@ const dotenv = require("dotenv");
 const User = require("../models/users.model");
 const UserHashtag = require("../models/userhashtag.model");
 const Friends = require("../models/friends.model");
+const Hashtag = require("../models/hashtag.model");
 
 dotenv.config();
+
+/*
+ *
+ * USER FUNCTIONS
+ * 
+*/
 
 // Find current user
 exports.findCurrentUser = (req, res) => {
@@ -96,8 +103,62 @@ exports.updateBio = (req, res) => {
   });
 };
 
+/*
+ *
+ * HASHTAG FUNCTIONS
+ * 
+*/
+
+// Get all hashtags
 exports.getHashtags = (req, res) => {
-  UserHashtag.getHashtags((err, data) => {
+  Hashtag.getHashtags((err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `No hashtags found.`,
+        });
+      } else {
+        res.status(500).send({
+          message:
+            "Error retrieving hashtags",
+        });
+      }
+    } else
+      res.send({
+        success: true,
+        data: data,
+      });
+  });
+}
+// Delete a hashtag
+exports.removeHashtag = (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  Hashtag.removeHashtag(req.session.nickname,req.body.tag, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Hashtag not found.`,
+        });
+      } else {
+        res.status(500).send({
+          message:
+            "Error deleting hashtag",
+        });
+      }
+    } else
+      res.send({
+        success: true,
+        data: data,
+      });
+  });
+}
+
+exports.getHashtagCategories = (req,res) => {
+  Hashtag.getHashtagCategories((err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
@@ -117,26 +178,11 @@ exports.getHashtags = (req, res) => {
   });
 }
 
-exports.getHashtagCategories = (req,res) => {
-  UserHashtag.getHashtagCategories((err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `No hashtags found.`,
-        });
-      } else {
-        res.status(500).send({
-          message:
-            "Error retrieving hashtags",
-        });
-      }
-    } else
-      res.send({
-        success: true,
-        data: data,
-      });
-  });
-}
+/*
+ *
+ * USER HASHTAG FUNCTIONS
+ * 
+*/
 
 exports.getUserHashtags = (req, res) => {
   if (!req.session.nickname) {
@@ -300,6 +346,12 @@ exports.getPotentialFriends = (req, res) => {
     }
   });
 };
+
+/*
+ *
+ * FRIEND FUNCTIONS
+ * 
+ */
 
 exports.requestFriend = (req, res) => {
   console.log("requesting");

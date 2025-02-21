@@ -27,7 +27,13 @@ module.exports = (app) => {
     auth,
     basic.getHashtags
   );
-
+  router.delete(
+    "/hashtags",
+    authCheckNext.isOwner,
+    auth,
+    basic.removeHashtag
+  );
+  // get hashtag categories
   router.get(
     "/hashtags/categories",
     authCheckNext.isOwner,

@@ -1,4 +1,4 @@
-import { getCookie } from "./getCookie.js"
+import { getCookie } from "../public/getCookie.js"
 
 window.addEventListener("load", () => {
     // Get the JWT token from the cookie
