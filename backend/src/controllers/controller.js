@@ -157,6 +157,35 @@ exports.removeHashtag = (req, res) => {
   });
 }
 
+// Rename hashtag
+exports.renameHashtag = (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  Hashtag.renameHashtag(req.session.nickname, req.body.tag, req.body.name, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Hashtag not found.`,
+        });
+      } else {
+        res.status(500).send({
+          message:
+            "Error editing hashtag",
+        });
+      }
+    } else
+      res.send({
+        success: true,
+        data: data,
+      });
+  });
+}
+
+// Get categories
 exports.getHashtagCategories = (req,res) => {
   Hashtag.getHashtagCategories((err, data) => {
     if (err) {

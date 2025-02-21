@@ -27,12 +27,20 @@ module.exports = (app) => {
     auth,
     basic.getHashtags
   );
+  // delete a hashtag
   router.delete(
-    "/hashtags",
+    "/hashtags/tag",
     authCheckNext.isOwner,
     auth,
     basic.removeHashtag
   );
+  // rename a hashtag
+  router.post(
+    "/hashtags/tag",
+    authCheckNext.isOwner,
+    auth,
+    basic.renameHashtag
+  )
   // get hashtag categories
   router.get(
     "/hashtags/categories",
