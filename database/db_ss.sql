@@ -27,8 +27,12 @@ CREATE TABLE `friends` (
   `friend_user_id` int NOT NULL,
   PRIMARY KEY (`user_id`,`friend_user_id`),
   KEY `FK_friends_user_2` (`friend_user_id`),
-  CONSTRAINT `FK_friends_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
-  CONSTRAINT `FK_friends_user_2` FOREIGN KEY (`friend_user_id`) REFERENCES `user` (`user_id`)
+  CONSTRAINT `FK_friends_user` FOREIGN KEY (`user_id`)
+    REFERENCES `user` (`user_id`)
+    ON DELETE CASCADE,
+  CONSTRAINT `FK_friends_user_2` FOREIGN KEY (`friend_user_id`)
+    REFERENCES `user` (`user_id`)
+    ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -52,7 +56,11 @@ DROP TABLE IF EXISTS `hashtag`;
 CREATE TABLE `hashtag` (
   `tag_number` varchar(10) NOT NULL,
   `content` varchar(255) NOT NULL,
-  PRIMARY KEY (`tag_number`)
+  `category_number` varchar(2) NOT NULL,
+  PRIMARY KEY (`tag_number`),
+  CONSTRAINT `FK_categories_number` FOREIGN KEY (category_number)
+    REFERENCES `categories` (`category_number`)
+    ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -147,8 +155,12 @@ CREATE TABLE `userhashtag` (
   `tag_number` varchar(10) NOT NULL,
   PRIMARY KEY (`user_id`,`tag_number`),
   KEY `FK_userhashtag_hashtag` (`tag_number`),
-  CONSTRAINT `FK_userhashtag_hashtag` FOREIGN KEY (`tag_number`) REFERENCES `hashtag` (`tag_number`),
-  CONSTRAINT `FK_userhashtag_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+  CONSTRAINT `FK_userhashtag_hashtag` FOREIGN KEY (`tag_number`)
+    REFERENCES `hashtag` (`tag_number`)
+    ON DELETE CASCADE,
+  CONSTRAINT `FK_userhashtag_user` FOREIGN KEY (`user_id`)
+    REFERENCES `user` (`user_id`)
+    ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

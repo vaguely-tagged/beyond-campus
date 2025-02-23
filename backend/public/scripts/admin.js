@@ -1,6 +1,7 @@
-import { getCookie } from "../public/getCookie.js"
+import { getCookie } from "./getCookie.js"
 
 window.addEventListener("load", () => {
+    console.log("admin");
     // Get the JWT token from the cookie
     const jwt = getCookie("jwt");
     if (jwt) {
@@ -15,13 +16,13 @@ window.addEventListener("load", () => {
         })
         .then((response) => response.json())
         .then((userData) => {
+            console.log(userData.perm);
             if (!userData.perm) {
                 alert("Access Denied");
-                window.location.href = "/auth/logout";
+                window.location.href = "/";
             }
             else {
                 document.body.style.visibility="visible";
-                headers.append("permissions",userData.perm);
             }
         })
         

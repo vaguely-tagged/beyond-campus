@@ -23,9 +23,12 @@ export const category = fetch("/api/hashtags", {
     .then((resp) => resp.json())
     .then((cat_data) => {
       var c = {};
+      d.sort((a,b) => 
+        a.category_number - b.category_number
+      );
       cat_data.data.forEach((x) => {
         c[x.name] = [];
-        while (d[i].tag_number.substring(0,2) == x.category_number) {
+        while (d[i].category_number == x.category_number) {
           c[x.name].push(d[i]);
           i++;
           if (i == d.length) break;
