@@ -27,6 +27,34 @@ module.exports = (app) => {
     auth,
     basic.getHashtags
   );
+  // add a tag
+  router.post(
+    "/hashtags",
+    authCheckNext.isOwner,
+    auth,
+    basic.addHashtag
+  );
+  // create a category
+  router.post(
+    "/hashtags/category/new",
+    authCheckNext.isOwner,
+    auth,
+    basic.addCategory
+  );
+  // rename a category
+  router.post(
+    "/hashtags/category",
+    authCheckNext.isOwner,
+    auth,
+    basic.renameCategory
+  );
+  // delete a category
+  router.delete(
+    "/hashtags/category",
+    authCheckNext.isOwner,
+    auth,
+    basic.removeCategory
+  );
   // delete a hashtag
   router.delete(
     "/hashtags/tag",
@@ -43,10 +71,10 @@ module.exports = (app) => {
   )
   // get hashtag categories
   router.get(
-    "/hashtags/categories",
+    "/hashtags/category",
     authCheckNext.isOwner,
     auth,
-    basic.getHashtagCategories
+    basic.getCategories
   );
   // update bio of current user
   router.post(

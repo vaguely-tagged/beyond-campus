@@ -16,7 +16,7 @@ export const category = fetch("/api/hashtags", {
   .then((data) => {
     var d = data.data;
     var i = 0;
-    return fetch("/api/hashtags/categories", {
+    return fetch("/api/hashtags/category", {
       method: "GET",
       headers
     })
@@ -28,6 +28,7 @@ export const category = fetch("/api/hashtags", {
       );
       cat_data.data.forEach((x) => {
         c[x.name] = [];
+        if (i == d.length) return;
         while (d[i].category_number == x.category_number) {
           c[x.name].push(d[i]);
           i++;

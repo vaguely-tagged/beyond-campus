@@ -4,6 +4,7 @@ const User = require("../models/users.model");
 const UserHashtag = require("../models/userhashtag.model");
 const Friends = require("../models/friends.model");
 const Hashtag = require("../models/hashtag.model");
+const Categories = require("../models/categories.model");
 
 dotenv.config();
 
@@ -130,6 +131,27 @@ exports.getHashtags = (req, res) => {
       });
   });
 }
+// Create new hashtag
+exports.addHashtag = (req,res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  Hashtag.addHashtag(req.session.nickname, req.body.category, req.body.name, (err, data) => {
+    if (err) {
+      res.status(500).send({
+        message: "Error adding hashtag",
+      });
+    } else {
+      res.send({
+        success: true,
+        data: data,
+      });
+    }
+  });
+}
+
 // Delete a hashtag
 exports.removeHashtag = (req, res) => {
   const errors = validationResult(req);
@@ -185,9 +207,15 @@ exports.renameHashtag = (req, res) => {
   });
 }
 
+/*
+ *
+ * CATEGORY FUNCTIONS
+ * 
+ */
+
 // Get categories
-exports.getHashtagCategories = (req,res) => {
-  Hashtag.getHashtagCategories((err, data) => {
+exports.getCategories = (req,res) => {
+  Categories.getCategories((err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
@@ -207,11 +235,87 @@ exports.getHashtagCategories = (req,res) => {
   });
 }
 
+// Create a category
+exports.addCategory = (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  Categories.addCategory(req.session.nickname, req.body.name, (err, data) => {
+    if (err) {
+      res.status(500).send({
+        message: "Error adding category",
+      });
+    } else {
+      res.send({
+        success: true,
+        data: data,
+      });
+    }
+  });
+}
+
+// Rename a category
+exports.renameCategory = (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+ Categories.renameCategory(req.session.nickname, req.body.category, req.body.name, (err, data) => {
+  if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Category not found.`,
+        });
+      } else {
+        res.status(500).send({
+          message:
+            "Error editing category",
+        });
+      }
+    } else
+      res.send({
+        success: true,
+        data: data,
+      });
+  });
+}
+
+// Remove a category
+exports.removeCategory = (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  Categories.removeCategory(req.session.nickname,req.body.category, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Category not found.`,
+        });
+      } else {
+        res.status(500).send({
+          message:
+            "Error deleting category",
+        });
+      }
+    } else
+      res.send({
+        success: true,
+        data: data,
+      });
+  });
+}
+
 /*
  *
  * USER HASHTAG FUNCTIONS
  * 
-*/
+ */
 
 exports.getUserHashtags = (req, res) => {
   if (!req.session.nickname) {
@@ -417,7 +521,6 @@ exports.requestFriend = (req, res) => {
 
 // Insert friend (direct add)
 exports.insertFriend = (req, res) => {
-  console.log(req.body);
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {

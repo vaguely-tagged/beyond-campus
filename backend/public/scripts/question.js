@@ -1,6 +1,15 @@
 import { getCookie } from "./getCookie.js";
 const jwt = getCookie("jwt");
 
+const waitForElem = (id) => {
+  const interval = setInterval(() => {
+    if (document.getElementById(id)) {
+      clearInterval(interval);
+      document.getElementById(id).checked=true;
+    }
+  },100);
+}
+
 window.addEventListener("load", () => {
   if (jwt) {
     // Include the token in the fetch request headers
@@ -15,9 +24,7 @@ window.addEventListener("load", () => {
       .then((response) => response.json())
       .then((data) => {
         for (const hashtag of data.data) {
-          console.log(hashtag.tag_number);
-          var checkbox = document.getElementById(hashtag.tag_number);
-          checkbox.checked=true;
+          waitForElem(hashtag.tag_number);
         }
       })
       .catch((error) => {
