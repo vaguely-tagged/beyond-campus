@@ -20,6 +20,7 @@ ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 RUN node --version
 RUN npm --version
 RUN apt-get clean
+RUN apt-get install gcc
 
 # Create the working directory
 WORKDIR /usr/src/app/
@@ -37,7 +38,8 @@ RUN npm install
 # Install dependencies
 RUN npm install -g node-gyp@7.1.2
 WORKDIR /usr/src/app/backend/src/lib/
-RUN chmod 777 download.sh && ./download.sh
+RUN chmod +x download.sh 
+RUN ./download.sh
 
 # WORKDIR /usr/src/app
 
@@ -48,4 +50,5 @@ RUN chmod 777 download.sh && ./download.sh
 EXPOSE 443
 
 WORKDIR /usr/src/app/backend/src/
+COPY backend/src/.env /usr/src/app/backend/src/.env
 CMD node server.js
