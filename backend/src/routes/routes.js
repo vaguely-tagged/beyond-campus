@@ -173,7 +173,25 @@ module.exports = (app) => {
     auth,
     check("request_id").notEmpty().isInt().toInt(),
     basic.rejectRequest
-  )
+  );
+
+  // block user
+  router.post(
+    "/block",
+    authCheckNext.isOwner,
+    auth,
+    check("block_id").notEmpty().isInt().toInt(),
+    basic.blockUser
+  );
+
+  // unblock user
+  router.delete(
+    "/block",
+    authCheckNext.isOwner,
+    auth,
+    check("block_id").notEmpty().isInt().toInt(),
+    basic.unblockUser
+  );
 
   app.use("/api", router);
 };

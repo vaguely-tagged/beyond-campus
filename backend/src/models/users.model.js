@@ -3,7 +3,7 @@ const db = require("./db.js");
 const User = function (database) {};
 
 User.findById = (user_id, result) => {
-  db.query("SELECT * FROM user WHERE user_id = ?", [user_id], (err, res) => {
+  db.query("SELECT user_id,username,bio,major,year,gender,permissions FROM user WHERE user_id = ?", [user_id], (err, res) => {
     if (err) {
       // console.log("error: ", err);
       result(err, null);

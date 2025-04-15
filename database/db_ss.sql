@@ -26,6 +26,7 @@ CREATE TABLE `friends` (
   `user_id` int NOT NULL,
   `friend_user_id` int NOT NULL,
   PRIMARY KEY (`user_id`,`friend_user_id`),
+  KEY `FK_friends_user` (`user_id`),
   KEY `FK_friends_user_2` (`friend_user_id`),
   CONSTRAINT `FK_friends_user` FOREIGN KEY (`user_id`)
     REFERENCES `user` (`user_id`)
@@ -134,12 +135,41 @@ LOAD DATA INFILE '/var/lib/mysql-files/user.csv'
 UNLOCK TABLES;
 
 --
--- Table structure for table `friendrequest`
+-- Table structure for table `block`
 --
 
+DROP TABLE IF EXISTS `block`;
+CREATE TABLE `block` (
+  `user_blocker` int NOT NULL,
+  `user_blocked` int NOT NULL,
+  PRIMARY KEY (`user_blocker`,`user_blocked`),
+  KEY `FK_blocker` (`user_blocker`),
+  KEY `FK_blocked` (`user_blocked`),
+  CONSTRAINT `FK_blocker` FOREIGN KEY (`user_blocker`)
+    REFERENCES `user` (`user_id`)
+    ON DELETE CASCADE,
+  CONSTRAINT `FK_blocked` FOREIGN KEY (`user_blocked`)
+    REFERENCES `user` (`user_id`)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+--
+-- Table structure for table `friendrequest`
+--
+DROP TABLE IF EXISTS `friendrequest`;
 CREATE TABLE  `friendrequest` (
   `sender` int NOT NULL,
-  `receiver` int NOT NULL
+  `receiver` int NOT NULL,
+  PRIMARY KEY (`sender`,`receiver`),
+  KEY `FK_sender` (`sender`),
+  KEY `FK_receiver` (`receiver`),
+  CONSTRAINT `FK_sender` FOREIGN KEY (`sender`)
+    REFERENCES `user` (`user_id`)
+    ON DELETE CASCADE,
+  CONSTRAINT `FK_receiver` FOREIGN KEY (`receiver`)
+    REFERENCES `user` (`user_id`)
+    ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 

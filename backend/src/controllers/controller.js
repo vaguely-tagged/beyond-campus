@@ -5,6 +5,7 @@ const UserHashtag = require("../models/userhashtag.model");
 const Friends = require("../models/friends.model");
 const Hashtag = require("../models/hashtag.model");
 const Categories = require("../models/categories.model");
+const Block = require("../models/block.model");
 
 dotenv.config();
 
@@ -71,6 +72,7 @@ exports.findUser = (req, res) => {
         gender: data.gender,
         bio: data.bio,
         registration_date: data.registration_date,
+        permissions: data.permissions
       });
   });
 };
@@ -487,7 +489,6 @@ exports.getPotentialFriends = (req, res) => {
  */
 
 exports.requestFriend = (req, res) => {
-  console.log("requesting");
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -650,3 +651,51 @@ exports.getCurrentUserRequests = (req, res) => {
       });
   });
 };
+
+/*
+ *
+ * BLOCK FUNCTIONS
+ * 
+ */
+
+exports.blockUser = (req, res) => {
+  console.log(req.body);
+  Block.blockUser(req.session.nickname, req.body.block_id, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found user with id ${req.session.nickname}.`,
+          });
+        } else {
+          res.status(500).send({
+            message: "Error blocking user",
+          });
+        }
+      } else
+        res.send({
+          success: true,
+          data: data
+        });      
+  });
+}
+
+exports.unblockUser = (req, res) => {
+  console.log(req.body);
+  Block.unblockUser(req.session.nickname, req.body.block_id, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found user with id ${req.session.nickname}.`,
+          });
+        } else {
+          res.status(500).send({
+            message: "Error unblocking user",
+          });
+        }
+      } else
+        res.send({
+          success: true,
+          data: data
+        });      
+  });
+}
