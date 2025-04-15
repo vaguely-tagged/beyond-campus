@@ -3,6 +3,7 @@ version: '2'
 services:
   mysql:
     image: mysql:5.7
+    platform: linux/amd64
     environment:
       MYSQL_HOST: localhost
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
