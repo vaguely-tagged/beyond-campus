@@ -2,6 +2,7 @@ const auth = require("../utils/auth");
 const authCheckNext = require("../utils/authCheckNext.js");
 const { validateArrayOfString } = require("../utils/miscValidation.js");
 const { check } = require("express-validator");
+const forumRouter = require("./forum.js");
 
 module.exports = (app) => {
   const basic = require("../controllers/controller.js");
@@ -127,4 +128,5 @@ module.exports = (app) => {
   )
 
   app.use("/api", router);
+  app.use("/api/forum", forumRouter);
 };
