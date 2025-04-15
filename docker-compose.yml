@@ -3,6 +3,7 @@ version: '2'
 services:
   mysql:
     image: mysql:5.7
+    platform: linux/amd64
     environment:
       MYSQL_HOST: localhost
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
@@ -27,9 +28,9 @@ services:
     environment:
       MYSQL_HOST_IP: mysql
     env_file: .env
-    volumes:
-      - nodejs_data:/var/lib/nodejs
-      - ./backend:/usr/src/app/backend
+    # volumes:
+    #   - nodejs_data:/var/lib/nodejs
+    #   - ./backend:/usr/src/app/backend
     depends_on:
       mysql:
         condition: service_healthy
