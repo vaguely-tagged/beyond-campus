@@ -1,0 +1,27 @@
+<html>
+  <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hashtags</title>
+  <link rel="stylesheet" href="../css/hashtag-style.css">
+  </head>
+
+  <body style="visibility: hidden">
+    <header class="fixed-header" role="banner">
+        <div class="container-fluid">
+          <!-- Site Title  -->
+          <div class="site-title col-xs-3">
+            <a href="/admin/adminCenter"><h1>Admin Center</h1></a>
+          </div>
+          <a href="/auth/logout"><div class="logout-button">Log out</div></a>
+        </div>
+      </header>
+    <div class="bg-image"></div>
+
+    <form id="checkbox-form" action="#">
+      <h2>User Hashtags</h2>
+      <button id="new-category" class="submit-button">Create New Category</button>
+      <div id="tags"></div>
+    </form>
+    <script type="module" src="../scripts/hashtags.js"></script>
+  </body>
+</html>
