@@ -116,6 +116,7 @@ CREATE TABLE `user` (
   `year` year NOT NULL,
   `gender` enum('Male','Female','Other','Prefer not to say') NOT NULL,
   `permissions` TINYINT(1),
+  `reports` int DEFAULT 0,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -149,6 +150,29 @@ CREATE TABLE `block` (
     REFERENCES `user` (`user_id`)
     ON DELETE CASCADE,
   CONSTRAINT `FK_blocked` FOREIGN KEY (`user_blocked`)
+    REFERENCES `user` (`user_id`)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+--
+-- Table structure for table `report`
+--
+
+DROP TABLE IF EXISTS `report`;
+CREATE TABLE `report` (
+  `user_reporter` int NOT NULL,
+  `user_reported` int NOT NULL,
+  `message` text CHARACTER SET utf8mb4,
+  `notes` text CHARACTER SET utf8mb4,
+  `report_id` int NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`report_id`),
+  KEY `FK_reporter` (`user_reporter`),
+  KEY `FK_reported` (`user_reported`),
+  CONSTRAINT `FK_reporter` FOREIGN KEY (`user_reporter`)
+    REFERENCES `user` (`user_id`)
+    ON DELETE CASCADE,
+  CONSTRAINT `FK_reported` FOREIGN KEY (`user_reported`)
     REFERENCES `user` (`user_id`)
     ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

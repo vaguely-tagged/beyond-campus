@@ -27,48 +27,6 @@ module.exports = (app) => {
     auth,
     basic.getHashtags
   );
-  // add a tag
-  router.post(
-    "/hashtags",
-    authCheckNext.isOwner,
-    auth,
-    basic.addHashtag
-  );
-  // create a category
-  router.post(
-    "/hashtags/category/new",
-    authCheckNext.isOwner,
-    auth,
-    basic.addCategory
-  );
-  // rename a category
-  router.post(
-    "/hashtags/category",
-    authCheckNext.isOwner,
-    auth,
-    basic.renameCategory
-  );
-  // delete a category
-  router.delete(
-    "/hashtags/category",
-    authCheckNext.isOwner,
-    auth,
-    basic.removeCategory
-  );
-  // delete a hashtag
-  router.delete(
-    "/hashtags/tag",
-    authCheckNext.isOwner,
-    auth,
-    basic.removeHashtag
-  );
-  // rename a hashtag
-  router.post(
-    "/hashtags/tag",
-    authCheckNext.isOwner,
-    auth,
-    basic.renameHashtag
-  )
   // get hashtag categories
   router.get(
     "/hashtags/category",
@@ -191,6 +149,15 @@ module.exports = (app) => {
     auth,
     check("block_id").notEmpty().isInt().toInt(),
     basic.unblockUser
+  );
+
+  // report user
+  router.post(
+    "/report",
+    authCheckNext.isOwner,
+    auth,
+    check("report_id").notEmpty().isInt().toInt(),
+    basic.reportUser
   );
 
   app.use("/api", router);

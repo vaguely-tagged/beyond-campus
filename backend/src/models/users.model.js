@@ -70,4 +70,34 @@ User.getAllUsers = (user_id, result) => {
   });
 }
 
+User.logReport = (user, user_id, result) => {
+  db.query(
+    "SELECT permissions FROM user WHERE user_id = ?;",
+    [user],
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      } else {
+        if (!res[0].permissions) {
+          err = new Error("Invalid request");
+          console.log(err);
+          result(err, null);
+          return;
+        }
+        db.query(
+          "UPDATE user SET reports = reports + 1 WHERE user_id = ?;",
+          [user_id],
+          (err, res) => {
+            if (err) {
+              result(err, null);
+              return;
+            }
+            result(null, res);
+            return;
+        });
+    }
+  });
+}
+
 module.exports = User;

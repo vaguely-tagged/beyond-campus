@@ -6,6 +6,7 @@ const Friends = require("../models/friends.model");
 const Hashtag = require("../models/hashtag.model");
 const Categories = require("../models/categories.model");
 const Block = require("../models/block.model");
+const Report = require("../models/report.model");
 
 dotenv.config();
 
@@ -133,81 +134,6 @@ exports.getHashtags = (req, res) => {
       });
   });
 }
-// Create new hashtag
-exports.addHashtag = (req,res) => {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-  Hashtag.addHashtag(req.session.nickname, req.body.category, req.body.name, (err, data) => {
-    if (err) {
-      res.status(500).send({
-        message: "Error adding hashtag",
-      });
-    } else {
-      res.send({
-        success: true,
-        data: data,
-      });
-    }
-  });
-}
-
-// Delete a hashtag
-exports.removeHashtag = (req, res) => {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-  Hashtag.removeHashtag(req.session.nickname,req.body.tag, (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Hashtag not found.`,
-        });
-      } else {
-        res.status(500).send({
-          message:
-            "Error deleting hashtag",
-        });
-      }
-    } else
-      res.send({
-        success: true,
-        data: data,
-      });
-  });
-}
-
-// Rename hashtag
-exports.renameHashtag = (req, res) => {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
-  Hashtag.renameHashtag(req.session.nickname, req.body.tag, req.body.name, (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Hashtag not found.`,
-        });
-      } else {
-        res.status(500).send({
-          message:
-            "Error editing hashtag",
-        });
-      }
-    } else
-      res.send({
-        success: true,
-        data: data,
-      });
-  });
-}
 
 /*
  *
@@ -237,81 +163,6 @@ exports.getCategories = (req,res) => {
   });
 }
 
-// Create a category
-exports.addCategory = (req, res) => {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-  Categories.addCategory(req.session.nickname, req.body.name, (err, data) => {
-    if (err) {
-      res.status(500).send({
-        message: "Error adding category",
-      });
-    } else {
-      res.send({
-        success: true,
-        data: data,
-      });
-    }
-  });
-}
-
-// Rename a category
-exports.renameCategory = (req, res) => {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
- Categories.renameCategory(req.session.nickname, req.body.category, req.body.name, (err, data) => {
-  if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Category not found.`,
-        });
-      } else {
-        res.status(500).send({
-          message:
-            "Error editing category",
-        });
-      }
-    } else
-      res.send({
-        success: true,
-        data: data,
-      });
-  });
-}
-
-// Remove a category
-exports.removeCategory = (req, res) => {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-  Categories.removeCategory(req.session.nickname,req.body.category, (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Category not found.`,
-        });
-      } else {
-        res.status(500).send({
-          message:
-            "Error deleting category",
-        });
-      }
-    } else
-      res.send({
-        success: true,
-        data: data,
-      });
-  });
-}
 
 /*
  *
@@ -680,7 +531,6 @@ exports.blockUser = (req, res) => {
 }
 
 exports.unblockUser = (req, res) => {
-  console.log(req.body);
   Block.unblockUser(req.session.nickname, req.body.block_id, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
@@ -697,5 +547,30 @@ exports.unblockUser = (req, res) => {
           success: true,
           data: data
         });      
+  });
+}
+
+/*
+ *
+ * REPORT FUNCTIONS
+ * 
+ */
+
+exports.reportUser = (req, res) => {
+  Report.reportUser(req.session.nickname, req.body.report_id, req.body.message, req.body.notes, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found user with id ${req.session.nickname}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error reporting user",
+        });
+      }
+    } else res.send({
+      success: true,
+      data: data
+    });
   });
 }
