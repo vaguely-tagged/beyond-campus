@@ -6,6 +6,7 @@ const FileStore = require("session-file-store")(session);
 const https = require("https");
 const fs = require("fs");
 const db = require("./models/db.js");
+require("dotenv").config();
 
 var auth = require("./utils/auth.js");
 var authCheck = require("./utils/authCheck.js");
