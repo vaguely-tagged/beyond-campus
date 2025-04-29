@@ -9,14 +9,31 @@ exports.createPost = (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
+  if (!req.session.nickname) {
+    return res.status(400).json({ success: false, message: "no user" });
+  }
+
   const { title, body } = req.body;
-  const user_id = req.user.user_id; // Assuming user is authenticated and user_id is available
+  const user_id = req.session.nickname;
 
   Post.createPost(user_id, title, body, (err, data) => {
     if (err) {
-      return res.status(500).json({ error: err.message });
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found user with id ${user_id}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error creating post for user " + user_id,
+        });
+      }
+    } else {
+      res.send({
+        success: true,
+        message: "Post created successfully",
+        data: data,
+      });
     }
-    return res.status(201).json({ message: "Post created successfully", data });
   });
 };
 
@@ -24,9 +41,21 @@ exports.createPost = (req, res) => {
 exports.getAllPosts = (req, res) => {
   Post.getAllPosts((err, data) => {
     if (err) {
-      return res.status(500).json({ error: err.message });
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: "No posts found.",
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving posts",
+        });
+      }
+    } else {
+      res.send({
+        success: true,
+        data: data,
+      });
     }
-    return res.status(200).json(data);
   });
 };
 
@@ -37,11 +66,20 @@ exports.getPostById = (req, res) => {
   Post.getPostById(post_id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
-        return res.status(404).json({ error: "Post not found" });
+        res.status(404).send({
+          message: `Not found post with id ${post_id}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving post " + post_id,
+        });
       }
-      return res.status(500).json({ error: err.message });
+    } else {
+      res.send({
+        success: true,
+        data: data,
+      });
     }
-    return res.status(200).json(data);
   });
 };
 
@@ -52,15 +90,32 @@ exports.createComment = (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
+  if (!req.session.nickname) {
+    return res.status(400).json({ success: false, message: "no user" });
+  }
+
   const { body } = req.body;
   const post_id = req.params.post_id;
-  const user_id = req.user.user_id; // Assuming user is authenticated and user_id is available
+  const user_id = req.session.nickname;
 
   Comment.createComment(user_id, post_id, body, (err, data) => {
     if (err) {
-      return res.status(500).json({ error: err.message });
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found post with id ${post_id}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error creating comment for post " + post_id,
+        });
+      }
+    } else {
+      res.send({
+        success: true,
+        message: "Comment created successfully",
+        data: data,
+      });
     }
-    return res.status(201).json({ message: "Comment created successfully", data });
   });
 };
 
@@ -70,8 +125,20 @@ exports.getCommentsByPostId = (req, res) => {
 
   Comment.getCommentsByPostId(post_id, (err, data) => {
     if (err) {
-      return res.status(500).json({ error: err.message });
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found comments for post ${post_id}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving comments for post " + post_id,
+        });
+      }
+    } else {
+      res.send({
+        success: true,
+        data: data,
+      });
     }
-    return res.status(200).json(data);
   });
 }; 
