@@ -2,11 +2,13 @@ const express = require("express");
 const router = express.Router();
 const forumController = require("../controllers/forum.js");
 const auth = require("../utils/auth.js");
+const authCheckNext = require("../utils/authCheckNext.js");
 const { check } = require("express-validator");
 
 // Create a new forum post (requires authentication)
 router.post(
   "/posts",
+  authCheckNext.isOwner,
   auth,
   [
     check("title").notEmpty().withMessage("Title is required"),
@@ -24,6 +26,7 @@ router.get("/posts/:post_id", forumController.getPostById);
 // Create a comment on a post (requires authentication)
 router.post(
   "/posts/:post_id/comments",
+  authCheckNext.isOwner,
   auth,
   [check("body").notEmpty().withMessage("Comment body is required")],
   forumController.createComment
