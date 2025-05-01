@@ -42,10 +42,10 @@ exports.processSignup = (req, res) => {
   } else {
     const { username, email, major, year, password, confirmPassword, gender } =
       data;
-    const password_e = bcrypt.hashSync(password, 10); // saltOrRounds: salt를 몇 번 돌릴건지.
+    const password_e = bcrypt.hashSync(password, 10); // saltOrRounds: salt.
     db.query(
-      "SELECT * FROM user WHERE email = ?;",
-      [email],
+      "SELECT user_id,email FROM user WHERE email = ? UNION SELECT * FROM blacklist WHERE email=?;",
+      [email,email],
       function (error, results, fields) {
         // The results of the query are handled in a callback function.?
         //
@@ -78,7 +78,7 @@ exports.processSignup = (req, res) => {
         else {
           return res.json({
             success: false,
-            message: "Email has already been registered!",
+            message: "Error registering email",
           });
         }
       }

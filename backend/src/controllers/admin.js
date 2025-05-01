@@ -308,3 +308,24 @@ exports.deleteReport = (req, res) => {
       return false;
   }
 }
+
+exports.removeUser = (req, res) => {
+  if (authCheck.isOwner(req, res)) {
+    User.removeAccount(req.session.nickname, req.body.user_id, (err, data) => {
+      if (err) {
+          res.status(500).send({
+            message:
+              "Error deleting user",
+          });
+      } else
+        res.send({
+          success: true,
+          data: data,
+        });
+    });
+  }
+  else {
+      res.redirect("/main");
+      return false;
+  }
+}

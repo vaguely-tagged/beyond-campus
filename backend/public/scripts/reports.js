@@ -21,8 +21,13 @@ function createUserCard(report) {
     delButton.innerText = "Delete report";
     delButton.addEventListener("click", () => deleteReport(report.report_id));
 
+    const remButton = document.createElement("button");
+    remButton.innerText = "Remove user";
+    remButton.addEventListener("click", () => removeUser(report.user_reported));
+
     card.appendChild(logButton);
     card.appendChild(delButton);
+    card.appendChild(remButton);
   return card;
 }
 
@@ -106,6 +111,32 @@ const deleteReport = (report_id) => {
         .then((response) => response.json())
         .then((result) => {
             window.confirm("Report deleted!");
+            window.location.reload();
+        })
+        .catch((error) => {
+            console.error("Error deleting report");
+        })
+    } else {
+        console.error("JWT token not found in cookie");
+        window.location.href = "/auth/logout";
+    }
+}
+
+const removeUser = (report_id) => {
+    if (!window.confirm("Are you sure you want to delete this user? This cannot be undone")) return;
+    if (jwt) {
+        const headers = new Headers({
+            Authorization: `${jwt}`,
+            "Content-Type": "application/json",
+        });
+        fetch("/admin/users",{
+            method: "DELETE",
+            headers,
+            body: JSON.stringify({user_id: report_id}),
+        })
+        .then((response) => response.json())
+        .then((result) => {
+            window.confirm("User removed!");
             window.location.reload();
         })
         .catch((error) => {

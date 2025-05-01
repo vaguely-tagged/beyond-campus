@@ -33,6 +33,10 @@ window.addEventListener("load", () => {
     })
       .then((response) => response.json())
       .then((userData) => {
+        if (!userData.success) {
+          alert("Failed to get profile");
+          window.location.href="/"
+        }
         console.log(userData);
         if (userData.permissions=="1") window.location.href="/";
         else document.body.style.visibility="visible";
