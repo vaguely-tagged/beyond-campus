@@ -1,36 +1,62 @@
 const Notification = require("../models/notifications.model.js");
 
 // Fetch notifications for a user
-exports.getUserNotifications = async (req, res) => {
-  try {
-    const notifications = await Notification.findAll({
-      where: { user_id: req.user.id },
-      order: [["createdAt", "DESC"]],
-    });
-    res.json(notifications);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch notifications." });
+exports.getUserNotifications = (req, res) => {
+  if (!req.session.nickname) {
+    return res.status(400).json({ success: false, message: "no user" });
   }
+
+  Notification.getUserNotifications(req.session.nickname, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found notifications for user ${req.session.nickname}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving notifications for user " + req.session.nickname,
+        });
+      }
+    } else {
+      res.send({
+        success: true,
+        data: data,
+      });
+    }
+  });
 };
 
 // Mark notification as read
-exports.markAsRead = async (req, res) => {
-  try {
-    await Notification.update(
-      { is_read: true },
-      { where: { id: req.params.id, user_id: req.user.id } }
-    );
-    res.json({ message: "Notification marked as read." });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to update notification." });
+exports.markAsRead = (req, res) => {
+  if (!req.session.nickname) {
+    return res.status(400).json({ success: false, message: "no user" });
   }
+
+  Notification.markAsRead(req.params.id, req.session.nickname, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found notification with id ${req.params.id}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error updating notification " + req.params.id,
+        });
+      }
+    } else {
+      res.send({
+        success: true,
+        message: "Notification marked as read.",
+      });
+    }
+  });
 };
 
 // Create a new notification
-exports.createNotification = async (user_id, type, content) => {
-  try {
-    await Notification.create({ user_id, type, content });
-  } catch (error) {
-    console.error("Error creating notification:", error);
-  }
+exports.createNotification = (user_id, type, content) => {
+  Notification.createNotification(user_id, type, content, (err, data) => {
+    if (err) {
+      console.error("Error creating notification:", err);
+    }
+  });
 };
