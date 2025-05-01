@@ -5,9 +5,9 @@ const waitForElem = (id) => {
   const interval = setInterval(() => {
     if (document.getElementById(id)) {
       clearInterval(interval);
-      document.getElementById(id).checked=true;
+      document.getElementById(id).checked = true;
     }
-  },100);
+  }, 100);
 }
 
 window.addEventListener("load", () => {
@@ -21,11 +21,13 @@ window.addEventListener("load", () => {
       method: "GET",
       headers,
     })
-      .then((response) => response.json())
-      .then((data) => {
-        for (const hashtag of data.data) {
-          waitForElem(hashtag.tag_number);
-        }
+      .then((response) => {
+        response.json()
+          .then((data) => {
+            for (const hashtag of data.data) {
+              waitForElem(hashtag.tag_number);
+            }
+          })
       })
       .catch((error) => {
         console.error("Error fetching hashtag data:", error);
