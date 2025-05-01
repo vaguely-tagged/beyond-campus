@@ -3,18 +3,8 @@ const dotenv = require("dotenv");
 const User = require("../models/users.model");
 const UserHashtag = require("../models/userhashtag.model");
 const Friends = require("../models/friends.model");
-const Hashtag = require("../models/hashtag.model");
-const Categories = require("../models/categories.model");
-const Block = require("../models/block.model");
-const Report = require("../models/report.model");
 
 dotenv.config();
-
-/*
- *
- * USER FUNCTIONS
- * 
-*/
 
 // Find current user
 exports.findCurrentUser = (req, res) => {
@@ -73,7 +63,6 @@ exports.findUser = (req, res) => {
         gender: data.gender,
         bio: data.bio,
         registration_date: data.registration_date,
-        permissions: data.permissions
       });
   });
 };
@@ -107,15 +96,9 @@ exports.updateBio = (req, res) => {
   });
 };
 
-/*
- *
- * HASHTAG FUNCTIONS
- * 
-*/
-
-// Get all hashtags
+<<<<<<< HEAD
 exports.getHashtags = (req, res) => {
-  Hashtag.getHashtags((err, data) => {
+  UserHashtag.getHashtags((err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
@@ -135,41 +118,9 @@ exports.getHashtags = (req, res) => {
   });
 }
 
-/*
- *
- * CATEGORY FUNCTIONS
- * 
- */
-
-// Get categories
-exports.getCategories = (req,res) => {
-  Categories.getCategories((err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `No hashtags found.`,
-        });
-      } else {
-        res.status(500).send({
-          message:
-            "Error retrieving hashtags",
-        });
-      }
-    } else
-      res.send({
-        success: true,
-        data: data,
-      });
-  });
-}
-
-
-/*
- *
- * USER HASHTAG FUNCTIONS
- * 
- */
-
+=======
+// Get user hashtags
+>>>>>>> 9fb783cc9103a74b8b02e042a157cb24d8fa221a
 exports.getUserHashtags = (req, res) => {
   if (!req.session.nickname) {
     return res.status(400).json({ success: false, message: "no user" });
@@ -333,13 +284,8 @@ exports.getPotentialFriends = (req, res) => {
   });
 };
 
-/*
- *
- * FRIEND FUNCTIONS
- * 
- */
-
 exports.requestFriend = (req, res) => {
+  console.log("requesting");
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -373,6 +319,7 @@ exports.requestFriend = (req, res) => {
 
 // Insert friend (direct add)
 exports.insertFriend = (req, res) => {
+  console.log(req.body);
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -483,6 +430,51 @@ exports.getCurrentUserFriends = (req, res) => {
   });
 };
 
+// Friend Request Controllers
+exports.sendFriendRequest = (req, res) => {
+  const { user_id } = req.session;
+  const { friend_user_id } = req.body;
+  Friends.sendFriendRequest(user_id, friend_user_id, (err, result) => {
+    if (err) return res.status(500).send({ error: "Failed to send request" });
+    res.status(200).send(result);
+  });
+};
+
+exports.approveFriendRequest = (req, res) => {
+  const { user_id } = req.session;
+  const { friend_user_id } = req.body;
+  Friends.approveFriendRequest(user_id, friend_user_id, (err, result) => {
+    if (err) return res.status(500).send({ error: "Failed to approve" });
+    res.status(200).send(result);
+  });
+};
+
+exports.denyFriendRequest = (req, res) => {
+  const { user_id } = req.session;
+  const { friend_user_id } = req.body;
+  Friends.denyFriendRequest(user_id, friend_user_id, (err, result) => {
+    if (err) return res.status(500).send({ error: "Failed to deny" });
+    res.status(200).send(result);
+  });
+};
+
+exports.blockUser = (req, res) => {
+  const { user_id } = req.session;
+  const { friend_user_id } = req.body;
+  Friends.blockUser(user_id, friend_user_id, (err, result) => {
+    if (err) return res.status(500).send({ error: "Failed to block" });
+    res.status(200).send(result);
+  });
+};
+
+exports.getPendingRequests = (req, res) => {
+  const { user_id } = req.session;
+  Friends.getPendingRequests(user_id, (err, result) => {
+    if (err) return res.status(500).send({ error: "Failed to fetch requests" });
+    res.status(200).send(result);
+  });
+};
+
 exports.getCurrentUserRequests = (req, res) => {
   Friends.getUserRequests(req.session.nickname, (err, data) => {
     if (err) {
@@ -502,75 +494,3 @@ exports.getCurrentUserRequests = (req, res) => {
       });
   });
 };
-
-/*
- *
- * BLOCK FUNCTIONS
- * 
- */
-
-exports.blockUser = (req, res) => {
-  console.log(req.body);
-  Block.blockUser(req.session.nickname, req.body.block_id, (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Not found user with id ${req.session.nickname}.`,
-          });
-        } else {
-          res.status(500).send({
-            message: "Error blocking user",
-          });
-        }
-      } else
-        res.send({
-          success: true,
-          data: data
-        });      
-  });
-}
-
-exports.unblockUser = (req, res) => {
-  Block.unblockUser(req.session.nickname, req.body.block_id, (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Not found user with id ${req.session.nickname}.`,
-          });
-        } else {
-          res.status(500).send({
-            message: "Error unblocking user",
-          });
-        }
-      } else
-        res.send({
-          success: true,
-          data: data
-        });      
-  });
-}
-
-/*
- *
- * REPORT FUNCTIONS
- * 
- */
-
-exports.reportUser = (req, res) => {
-  Report.reportUser(req.session.nickname, req.body.report_id, req.body.message, req.body.notes, (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Not found user with id ${req.session.nickname}.`
-        });
-      } else {
-        res.status(500).send({
-          message: "Error reporting user",
-        });
-      }
-    } else res.send({
-      success: true,
-      data: data
-    });
-  });
-}

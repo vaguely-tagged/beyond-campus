@@ -3,7 +3,7 @@ const db = require("./db.js");
 const User = function (database) {};
 
 User.findById = (user_id, result) => {
-  db.query("SELECT * FROM user WHERE user_id = ?", [user_id], (err, res) => {
+  db.query("SELECT user_id,username,bio,major,year,gender,permissions FROM user WHERE user_id = ?", [user_id], (err, res) => {
     if (err) {
       // console.log("error: ", err);
       result(err, null);
@@ -40,5 +40,64 @@ User.updateBio = (user_id, bio, result) => {
     }
   );
 };
+
+User.getAllUsers = (user_id, result) => {
+  db.query(
+    "SELECT permissions FROM user WHERE user_id = ?;",
+    [user_id],
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      } else {
+        if (!res[0].permissions) {
+          err = new Error("Invalid request");
+          console.log(err);
+          result(err, null);
+          return;
+        }
+        db.query(
+          "SELECT username, email, user_id FROM user WHERE permissions=0;",
+          (err, res) => {
+            if (err) {
+              result(err, null);
+              return;
+            }
+            result(null, res);
+            return;
+        });
+    }
+  });
+}
+
+User.logReport = (user, user_id, result) => {
+  db.query(
+    "SELECT permissions FROM user WHERE user_id = ?;",
+    [user],
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      } else {
+        if (!res[0].permissions) {
+          err = new Error("Invalid request");
+          console.log(err);
+          result(err, null);
+          return;
+        }
+        db.query(
+          "UPDATE user SET reports = reports + 1 WHERE user_id = ?;",
+          [user_id],
+          (err, res) => {
+            if (err) {
+              result(err, null);
+              return;
+            }
+            result(null, res);
+            return;
+        });
+    }
+  });
+}
 
 module.exports = User;

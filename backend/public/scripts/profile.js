@@ -33,6 +33,9 @@ window.addEventListener("load", () => {
     })
       .then((response) => response.json())
       .then((userData) => {
+        console.log(userData);
+        if (userData.permissions=="1") window.location.href="/";
+        else document.body.style.visibility="visible";
         // Update the username and bio on the page with fetched data
         const usernameElement = document.querySelector(".username");
         const bioElement = document.querySelector(".bio");
