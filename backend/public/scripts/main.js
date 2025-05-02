@@ -48,183 +48,212 @@ window.addEventListener("load", () => {
   // Get the JWT token from the cookie
   const jwt = getCookie("jwt");
 
-  if (jwt) {
-    // Include the token in the fetch request headers
-    const headers = new Headers({
-      Authorization: `${jwt}`,
-      "Content-Type": "application/json",
-    });
-
-    fetch("/api/user", {
-      method: "GET",
-      headers,
-    })
-      .then((response) => response.json())
-      .then((userData) => {
-        if (userData.perm) window.location.href = "/admin/adminCenter";
-
-        // Update the username and bio on the page with fetched data
-        const usernameElement = document.querySelector(".username");
-        const bioElement = document.querySelector(".bio");
-        const genderElement = document.querySelector(".gender");
-        const yearElement = document.querySelector(".year");
-        const majorElement = document.querySelector(".major");
-        const registElement = document.querySelector(".registration_date");
-
-        usernameElement.innerHTML = `<strong>${userData.username}</strong>`;
-        bioElement.textContent =
-          decodeHtmlEntities(userData.bio) || "Your bio is empty!";
-        genderElement.textContent = userData.gender;
-        yearElement.textContent = userData.year;
-        majorElement.textContent = userData.major;
-        registElement.textContent =
-          "Joined: " +
-          new Date(userData.registration_date).toLocaleDateString();
-      })
-      .catch((error) => {
-        console.error("Error fetching user data:", error);
-      });
-
-    fetch("/api/user/hashtag", {
-      method: "GET",
-      headers,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        for (const hashtag of data.data) {
-          const hashtagsDiv = document.querySelector(".hashtags");
-          const hashtagSpan = document.createElement("span");
-          hashtagSpan.className = "hashtag";
-          category_noseparate.then((d) => {
-            console.log(d);
-          hashtagSpan.textContent =
-            "#" + d[hashtag.tag_number];
-          });
-          hashtagsDiv.appendChild(hashtagSpan);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching hashtag data:", error);
-      });
-
-    fetch("/api/friends", {
-      method: "GET",
-      headers,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const friendsData = data.data;
-        for (const friendData of friendsData) {
-          const userCard = createUserCard(friendData);
-          userCardsContainer.appendChild(userCard);
-          const removeFriendButton = userCard.querySelector(
-            ".remove-friend-button"
-          );
-          removeFriendButton.addEventListener("click", () => {
-            // Make a POST fetch request with user_id as the request body
-            if (
-              window.confirm(
-                `Are you sure you want to remove ${friendData.username} from your friends list?`
-              )
-            ) {
-              const user_id = friendData.user_id;
-              fetch(`/api/friends`, {
-                method: "DELETE",
-                headers,
-                body: JSON.stringify({ friend_user_id: user_id }),
-              })
-                .then((response) => response.json())
-                .then((result) => {
-                  if (window.confirm("Friend removed!")) {
-                    location.reload();
-                  } else {
-                    location.reload();
-                  }
-
-                  // You can add additional logic here, like showing a confirmation message.
-                })
-                .catch((error) => {
-                  console.error("Error removing friend:", error);
-                });
-            }
-          });
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching hashtag data:", error);
-      });
-
-    fetch("/api/requests", {
-      method: "GET",
-      headers,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const requestsData = data.data;
-        for (const requestData of requestsData) {
-          const requestCard = createRequestCard(requestData);
-          requestContainer.appendChild(requestCard);
-          
-          // reject button
-          const rejectFriendButton = requestCard.querySelector(
-            "#reject"
-          );
-          rejectFriendButton.addEventListener("click", () => {
-            // Make a DELETE fetch request with user_id as the request body
-            if (
-              window.confirm(
-                `Are you sure you want to reject ${requestData.username}'s friend request?`
-              )
-            ) {
-              const req_id = requestData.user_id;
-              fetch(`/api/requests`, {
-                method: "DELETE",
-                headers,
-                body: JSON.stringify({ request_id: req_id }),
-              })
-                .then((response) => response.json())
-                .then((result) => {
-                  if (window.confirm("Request rejected!")) {
-                    location.reload();
-                  } else {
-                    location.reload();
-                  }
-
-                  // You can add additional logic here, like showing a confirmation message.
-                })
-                .catch((error) => {
-                  console.error("Error rejecting request:", error);
-                });
-            }
-          });
-          
-          // accept button
-          const acceptFriendButton = requestCard.querySelector(
-            "#accept"
-          );
-          acceptFriendButton.addEventListener("click", () => {
-            const req_id = requestData.user_id;
-            fetch(`/api/requests`, {
-              method: "POST",
-              headers,
-              body: JSON.stringify({ friend_user_id: req_id }),              
-            })
-              .then((response => response.json()))
-              .then((result) => {
-                window.confirm("Request accepted!");
-                location.reload();
-              })
-              .catch((error) => {
-                console.error("Error accepting request:", error);
-              })
-          });
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching hashtag data:", error);
-      });
-  } else {
+  if (!jwt) {
     console.error("JWT token not found in cookie");
     window.location.href = "/auth/logout";
   }
+  // Include the token in the fetch request headers
+  const headers = new Headers({
+    Authorization: `${jwt}`,
+    "Content-Type": "application/json",
+  });
+
+  fetch("/api/user", {
+    method: "GET",
+    headers,
+  })
+    .then((response) => {
+      response.json()
+        .then((userData) => {
+          if (userData.perm) window.location.href = "/admin/adminCenter";
+
+          // Update the username and bio on the page with fetched data
+          const usernameElement = document.querySelector(".username");
+          const bioElement = document.querySelector(".bio");
+          const genderElement = document.querySelector(".gender");
+          const yearElement = document.querySelector(".year");
+          const majorElement = document.querySelector(".major");
+          const registElement = document.querySelector(".registration_date");
+
+          usernameElement.innerHTML = `<strong>${userData.username}</strong>`;
+          bioElement.textContent =
+            decodeHtmlEntities(userData.bio) || "Your bio is empty!";
+          genderElement.textContent = userData.gender;
+          yearElement.textContent = userData.year;
+          majorElement.textContent = userData.major;
+          registElement.textContent =
+            "Joined: " +
+            new Date(userData.registration_date).toLocaleDateString();
+        })
+        .catch((error) => {
+          console.error("Error fetching user data json decode:", error);
+        });
+    })
+    .catch((error) => {
+      console.error("Error fetching user data:", error);
+    });
+
+  fetch("/api/user/hashtag", {
+    method: "GET",
+    headers,
+  })
+    .then((response) => {
+      response.json()
+        .then((data) => {
+
+          console.log("recieved data of", data)
+          for (const hashtag of data.data) {
+            const hashtagsDiv = document.querySelector(".hashtags");
+            const hashtagSpan = document.createElement("span");
+            hashtagSpan.className = "hashtag";
+            category_noseparate.then((d) => {
+              console.log(d);
+              hashtagSpan.textContent =
+                "#" + d[hashtag.tag_number];
+            });
+            hashtagsDiv.appendChild(hashtagSpan);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching hashtag data json decode:", error);
+        });
+    })
+    .catch((error) => {
+      console.error("Error fetching hashtag data:", error);
+    });
+
+  fetch("/api/friends", {
+    method: "GET",
+    headers,
+  })
+    .then((response) => {
+      response.json()
+        .then((data) => {
+          console.log("UP HERE DATA I GOT BACK IS", data)
+          const friendsData = data.data;
+          for (const friendData of friendsData) {
+            const userCard = createUserCard(friendData);
+            userCardsContainer.appendChild(userCard);
+            const removeFriendButton = userCard.querySelector(
+              ".remove-friend-button"
+            );
+            removeFriendButton.addEventListener("click", () => {
+              // Make a POST fetch request with user_id as the request body
+              if (
+                window.confirm(
+                  `Are you sure you want to remove ${friendData.username} from your friends list?`
+                )
+              ) {
+                const user_id = friendData.user_id;
+                fetch(`/api/friends`, {
+                  method: "DELETE",
+                  headers,
+                  body: JSON.stringify({ friend_user_id: user_id }),
+                })
+                  .then((response) => {
+                    response.json()
+                      .then((result) => {
+                        if (window.confirm("Friend removed!")) {
+                          location.reload();
+                        } else {
+                          location.reload();
+                        }
+                        // You can add additional logic here, like showing a confirmation message.
+                      })
+                      .catch((error) => {
+                        console.error("Error removing friend json decode:", error);
+                      });
+                  })
+                  .catch((error) => {
+                    console.error("Error removing friend:", error);
+                  });
+              }
+            })
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching hashtag data json decode f ailed:", error);
+        });
+    })
+    .catch((error) => {
+      console.error("Error fetching hashtag data:", error);
+    });
+
+  fetch("/api/requests", {
+    method: "GET",
+    headers,
+  })
+    .then((response) => {
+      response.json()
+        .then((data) => {
+          console.log("DATA I GOT BACK IS", data)
+          const requestsData = data.data;
+          for (const requestData of requestsData) {
+            const requestCard = createRequestCard(requestData);
+            requestContainer.appendChild(requestCard);
+          
+            // reject button
+            const rejectFriendButton = requestCard.querySelector(
+              "#reject"
+            );
+            rejectFriendButton.addEventListener("click", () => {
+              // Make a DELETE fetch request with user_id as the request body
+              if (
+                window.confirm(
+                  `Are you sure you want to reject ${requestData.username}'s friend request?`
+                )
+              ) {
+                const req_id = requestData.user_id;
+                fetch(`/api/requests`, {
+                  method: "DELETE",
+                  headers,
+                  body: JSON.stringify({ request_id: req_id }),
+                })
+                  .then((response) => {
+                    response.json()
+                      .then((result) => {
+                        if (window.confirm("Request rejected!")) {
+                          location.reload();
+                        } else {
+                          location.reload();
+                        }
+                      })
+                      .catch((error) => {
+                        console.error("Error in reject accepting request json decode:", error);
+                      })
+                  })
+                  .catch((error) => {
+                    console.error("Error in reject accepting request:", error);
+                  })
+              }
+            });
+          
+            // accept button
+            const acceptFriendButton = requestCard.querySelector(
+              "#accept"
+            );
+            acceptFriendButton.addEventListener("click", () => {
+              const req_id = requestData.user_id;
+              fetch(`/api/requests`, {
+                method: "POST",
+                headers,
+                body: JSON.stringify({ friend_user_id: req_id }),              
+              })
+                .then((response) => {
+                  response.json()
+                    .then((result) => {
+                      window.confirm("Request accepted!");
+                      location.reload();
+                    })
+                    .catch((error) => {
+                      console.error("Error accepting request json decode:", error);
+                    })
+                })
+                .catch((error) => {
+                  console.error("Error accepting request:", error);
+                })
+            });
+          }
+        })
+    })
 });
