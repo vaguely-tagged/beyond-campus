@@ -13,12 +13,8 @@ Friends.getUserFriends = (user_id, result) => {
         return;
       }
 
-      if (res.length) {
-        result(null, res);
-        return;
-      } else {
-        result({ kind: "not_found" }, null);
-      }
+      result(null, res);
+      return;
     }
   );
 };
@@ -33,12 +29,8 @@ Friends.getUserRequests = (user_id, result) => {
         return;
       }
 
-      if (res.length) {
-        result(null, res);
-        return;
-      } else {
-        result({ kind:"not_found"}, null);
-      }
+      result(null, res);
+      return;
     }
   )
 }

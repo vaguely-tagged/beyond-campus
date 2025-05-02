@@ -65,6 +65,8 @@ exports.findUser = (req, res) => {
       }
     } else if (!data) {
       res.send({success: false});
+    } else if (data.permissions == 1) {
+      res.send({success: false});
     } else
       res.send({
         success: true,

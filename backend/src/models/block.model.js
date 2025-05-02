@@ -4,7 +4,6 @@ const Block = function(database) {};
 
 
 Block.blockUser = (user_id, other_id, result) => {
-    console.log("blocking");
     let q = db.query(
         "INSERT INTO block (user_blocker, user_blocked) values (?,?) ON DUPLICATE KEY UPDATE user_blocker=user_blocker;",
         [user_id,other_id],
@@ -16,7 +15,6 @@ Block.blockUser = (user_id, other_id, result) => {
               result(null, null);
               return;
     }});
-    console.log(q.sql);
 }
 
 Block.unblockUser = (user_id, other_id, result) => {

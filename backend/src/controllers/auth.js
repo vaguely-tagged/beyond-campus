@@ -103,7 +103,7 @@ exports.processLogin = (req, res) => {
   } else {
     const { email, password } = data;
     db.query(
-      "SELECT user_id, email, password FROM user WHERE email = ?",
+      "SELECT user_id, email, password, permissions FROM user WHERE email = ?",
       [email],
       function (error, results, fields) {
         //
@@ -126,6 +126,7 @@ exports.processLogin = (req, res) => {
             const token = generateAccessToken({ username: results[0].user_id });
             req.session.is_logined = true;
             req.session.nickname = results[0].user_id;
+            req.session.perm = results[0].permissions == 1;
             res.cookie("jwt", "", {
               expires: new Date(0),
               secure: process.env.NODE_ENV !== "development",

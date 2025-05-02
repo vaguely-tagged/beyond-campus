@@ -96,7 +96,6 @@ window.addEventListener("load", () => {
           const hashtagSpan = document.createElement("span");
           hashtagSpan.className = "hashtag";
           category_noseparate.then((d) => {
-            console.log(d);
           hashtagSpan.textContent =
             "#" + d[hashtag.tag_number];
           });
@@ -114,6 +113,7 @@ window.addEventListener("load", () => {
       .then((response) => response.json())
       .then((data) => {
         const friendsData = data.data;
+        if (!friendsData) return;
         for (const friendData of friendsData) {
           const userCard = createUserCard(friendData);
           userCardsContainer.appendChild(userCard);
@@ -161,7 +161,8 @@ window.addEventListener("load", () => {
       .then((response) => response.json())
       .then((data) => {
         const requestsData = data.data;
-        for (const requestData of requestsData) {
+        if (!requestsData) return;
+        requestsData.forEach((requestData) => {
           const requestCard = createRequestCard(requestData);
           requestContainer.appendChild(requestCard);
           
@@ -218,10 +219,10 @@ window.addEventListener("load", () => {
                 console.error("Error accepting request:", error);
               })
           });
-        }
+        });
       })
       .catch((error) => {
-        console.error("Error fetching hashtag data:", error);
+        console.error("Error fetching requests data:", error);
       });
   } else {
     console.error("JWT token not found in cookie");
