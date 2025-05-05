@@ -18,7 +18,7 @@ dotenv.config();
 
 // Find current user
 exports.findCurrentUser = (req, res) => {
-  User.findById(req.session.nickname, (err, data) => {
+  User.findById(req.session.nickname, req.session.nickname, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
@@ -52,7 +52,7 @@ exports.findUser = (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  User.findById(req.query.user_id, (err, data) => {
+  User.findById(req.query.user_id, req.session.nickname, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
@@ -63,6 +63,10 @@ exports.findUser = (req, res) => {
           message: "Error retrieving user with id " + req.query.user_id,
         });
       }
+    } else if (!data) {
+      res.send({success: false});
+    } else if (data.permissions == 1) {
+      res.send({success: false});
     } else
       res.send({
         success: true,
@@ -548,6 +552,26 @@ exports.unblockUser = (req, res) => {
           success: true,
           data: data
         });      
+  });
+}
+
+exports.getBlocks = (req, res) => {
+  Block.getBlocks(req.session.nickname, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found user with id ${req.session.nickname}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error fetching blocks",
+        });
+      }
+    } else
+      res.send({
+        success: true,
+        data: data
+      });  
   });
 }
 

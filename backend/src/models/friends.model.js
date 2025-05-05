@@ -13,12 +13,8 @@ Friends.getUserFriends = (user_id, result) => {
         return;
       }
 
-      if (res.length) {
-        result(null, res);
-        return;
-      } else {
-        result({ kind: "not_found" }, null);
-      }
+      result(null, res);
+      return;
     }
   );
 };
@@ -33,12 +29,8 @@ Friends.getUserRequests = (user_id, result) => {
         return;
       }
 
-      if (res.length) {
-        result(null, res);
-        return;
-      } else {
-        result({ kind:"not_found"}, null);
-      }
+      result(null, res);
+      return;
     }
   )
 }
@@ -76,18 +68,32 @@ Friends.requestFriend = (user_id, friend_user_id, result) => {
             return;
           }
           db.query(
-            "REPLACE INTO friendrequest (sender, receiver) VALUES (?,?)",
-            [user_id, friend_user_id],
+            "SELECT * FROM block WHERE (user_blocked=? AND user_blocker=?) OR (user_blocked=? AND user_blocker=?);",
+            [user_id,friend_user_id,friend_user_id,user_id],
             (err, res) => {
               if (err) {
                 result(err, null);
                 return;
-              } else {
-                result(null, null);
+              }
+              if (res.length) {
+                console.log("Blocked");
+                result(err, null);
                 return;
               }
-            }
-          );
+              db.query(
+                "REPLACE INTO friendrequest (sender, receiver) VALUES (?,?)",
+                [user_id, friend_user_id],
+                (err, res) => {
+                  if (err) {
+                    result(err, null);
+                    return;
+                  } else {
+                    result(null, null);
+                    return;
+                  }
+                }
+              );
+            });
         }
       );
     }
