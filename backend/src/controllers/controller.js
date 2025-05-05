@@ -491,9 +491,10 @@ exports.getCurrentUserRequests = (req, res) => {
   Friends.getUserRequests(req.session.nickname, (err, data) => {
     if (err) {
       if (err.kind == "not_found") {
-        res.status(404).send({
-          message: `Not found requests with user id ${req.session.nickname}.`,
-      });
+        return res.send({
+          success: true,
+          data: [],
+        });
       } else {
         res.status(500).send({
           message: `Error retrieving requests of user id ${req.session.nickname}.`,
