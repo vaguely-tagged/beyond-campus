@@ -14,11 +14,27 @@ export const category = fetch("/api/hashtags", {
 })
   .then((response) => response.json())
   .then((data) => {
-    var c = [];
-    data.data.forEach((x) => {
-      let i = Math.floor(Number(x.tag_number)/100);
-      if (i==c.length) c.push({});
-      c[i][x.tag_number]=x.content;
+    var d = data.data;
+    var i = 0;
+    return fetch("/api/hashtags/category", {
+      method: "GET",
+      headers
+    })
+    .then((resp) => resp.json())
+    .then((cat_data) => {
+      var c = {};
+      d.sort((a,b) => 
+        a.category_number - b.category_number
+      );
+      cat_data.data.forEach((x) => {
+        c[x.name] = [];
+        if (i == d.length) return;
+        while (d[i].category_number == x.category_number) {
+          c[x.name].push(d[i]);
+          i++;
+          if (i == d.length) break;
+        }
+      });
+      return c;
     });
-    return c;
   });

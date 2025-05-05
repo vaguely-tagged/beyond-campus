@@ -53,7 +53,9 @@ document.addEventListener("DOMContentLoaded", function () {
           if (data.success) {
             if (window.confirm("Login succesful!")) {
               console.log(data.perm);
-              if (data.perm) window.location.href="/auth/admin"
+              if (data.perm) {
+                window.location.href="/admin/adminCenter"
+              }
               else window.location.href = "/";
             } else {
               window.location.href = "/";

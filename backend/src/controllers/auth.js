@@ -25,16 +25,6 @@ exports.getSignupPage = (req, res) => {
   res.sendFile(path.resolve("../public/signup.html"));
 };
 
-exports.getAdminCenter = (req, res) => {
-  if (authCheck.isOwner(req, res)) {
-    res.sendFile(path.resolve("../public/admin.html"));
-  }
-  else {
-    res.redirect("/main");
-    return false;
-  }
-};
-
 exports.processSignup = (req, res) => {
   const result = validationResult(req);
   let data = {};

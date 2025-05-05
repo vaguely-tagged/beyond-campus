@@ -2,8 +2,6 @@ const auth = require("../utils/auth");
 const authCheckNext = require("../utils/authCheckNext.js");
 const { validateArrayOfString } = require("../utils/miscValidation.js");
 const { check } = require("express-validator");
-const forumRouter = require("./forum.js");
-const notificationsRouter = require("./notifications.js");
 
 module.exports = (app) => {
   const basic = require("../controllers/controller.js");
@@ -13,7 +11,6 @@ module.exports = (app) => {
   // Protected routes
   // get info of current user
   router.get("/user", authCheckNext.isOwner, auth, basic.findCurrentUser);
-
   // get info of other users based on user_id
   router.get(
     "/friend",
@@ -29,13 +26,6 @@ module.exports = (app) => {
     auth,
     basic.getHashtags
   );
-  // get hashtag categories
-  router.get(
-    "/hashtags/category",
-    authCheckNext.isOwner,
-    auth,
-    basic.getCategories
-  );
   // update bio of current user
   router.post(
     "/user/bio",
@@ -44,7 +34,6 @@ module.exports = (app) => {
     check("bio").notEmpty().isString().escape(),
     basic.updateBio
   );
-
   // update hashtags of current user
   router.post(
     "/user/hashtag",
@@ -53,7 +42,6 @@ module.exports = (app) => {
     validateArrayOfString("selectedValues"),
     basic.updateUserHashtag
   );
-
   // get hashtags of current user
   router.get(
     "/user/hashtag",
@@ -61,7 +49,6 @@ module.exports = (app) => {
     auth,
     basic.getUserHashtags
   );
-
   // get hashtags of other user
   router.get(
     "/friend/hashtag",
@@ -70,7 +57,6 @@ module.exports = (app) => {
     check("user_id").notEmpty().isInt().toInt(),
     basic.getOtherUserHashtags
   );
-
   // get other users based on hashtags
   router.get(
     "/friends-hashtag",
@@ -92,16 +78,14 @@ module.exports = (app) => {
     auth,
     basic.getCurrentUserFriends
   );
-
   // add friend to current user
   router.post(
     "/friends",
     authCheckNext.isOwner,
     auth,
     check("friend_user_id").notEmpty().isInt().toInt(),
-    basic.requestFriend
+    basic.insertFriend
   );
-
   // delete friend of current user
   router.delete(
     "/friends",
@@ -111,58 +95,5 @@ module.exports = (app) => {
     basic.deleteFriend
   );
 
-  // get requests
-  router.get(
-    "/requests",
-    authCheckNext.isOwner,
-    auth,
-    basic.getCurrentUserRequests
-  );
-  // accept request
-  router.post(
-    "/requests",
-    authCheckNext.isOwner,
-    auth,
-    check("friend_user_id").notEmpty().isInt().toInt(),
-    basic.insertFriend
-  );
-  // reject requests
-  router.delete(
-    "/requests",
-    authCheckNext.isOwner,
-    auth,
-    check("request_id").notEmpty().isInt().toInt(),
-    basic.rejectRequest
-  );
-
-  // block user
-  router.post(
-    "/block",
-    authCheckNext.isOwner,
-    auth,
-    check("block_id").notEmpty().isInt().toInt(),
-    basic.blockUser
-  );
-
-  // unblock user
-  router.delete(
-    "/block",
-    authCheckNext.isOwner,
-    auth,
-    check("block_id").notEmpty().isInt().toInt(),
-    basic.unblockUser
-  );
-
-  // report user
-  router.post(
-    "/report",
-    authCheckNext.isOwner,
-    auth,
-    check("report_id").notEmpty().isInt().toInt(),
-    basic.reportUser
-  );
-
   app.use("/api", router);
-  app.use("/api/forum", forumRouter);
-  app.use("/api/notifications", notificationsRouter);
 };

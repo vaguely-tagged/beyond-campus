@@ -2,8 +2,6 @@ const auth = require("../utils/auth");
 const authCheckNext = require("../utils/authCheckNext.js");
 const { validateArrayOfString } = require("../utils/miscValidation.js");
 const { check } = require("express-validator");
-const forumRouter = require("./forum.js");
-const notificationsRouter = require("./notifications.js");
 
 module.exports = (app) => {
   const basic = require("../controllers/controller.js");
@@ -22,20 +20,7 @@ module.exports = (app) => {
     check("user_id").notEmpty().isInt().toInt(),
     basic.findUser
   );
-  // get all hashtags
-  router.get(
-    "/hashtags",
-    authCheckNext.isOwner,
-    auth,
-    basic.getHashtags
-  );
-  // get hashtag categories
-  router.get(
-    "/hashtags/category",
-    authCheckNext.isOwner,
-    auth,
-    basic.getCategories
-  );
+
   // update bio of current user
   router.post(
     "/user/bio",
@@ -83,6 +68,51 @@ module.exports = (app) => {
       next();
     },
     basic.getPotentialFriends
+  );
+
+  // Friend Request Routes
+  // send a friend request
+  router.post(
+    "/friend/request",
+    authCheckNext.isOwner,
+    auth,
+    check("friend_user_id").notEmpty().isInt().toInt(),
+    basic.sendFriendRequest
+  );
+
+  // approve a friend request
+  router.patch(
+    "/friend/request/approve",
+    authCheckNext.isOwner,
+    auth,
+    check("friend_user_id").notEmpty().isInt().toInt(),
+    basic.approveFriendRequest
+  );
+
+  // deny a friend request
+  router.patch(
+    "/friend/request/deny",
+    authCheckNext.isOwner,
+    auth,
+    check("friend_user_id").notEmpty().isInt().toInt(),
+    basic.denyFriendRequest
+  );
+
+  // block a user
+  router.patch(
+    "/friend/block",
+    authCheckNext.isOwner,
+    auth,
+    check("friend_user_id").notEmpty().isInt().toInt(),
+    basic.blockUser
+  );
+
+  // get pending friend requests for current user
+  router.get(
+    "/friend/requests",
+    authCheckNext.isOwner,
+    auth,
+    basic.getPendingRequests
   );
 
   // get friends of current user
@@ -133,36 +163,7 @@ module.exports = (app) => {
     auth,
     check("request_id").notEmpty().isInt().toInt(),
     basic.rejectRequest
-  );
-
-  // block user
-  router.post(
-    "/block",
-    authCheckNext.isOwner,
-    auth,
-    check("block_id").notEmpty().isInt().toInt(),
-    basic.blockUser
-  );
-
-  // unblock user
-  router.delete(
-    "/block",
-    authCheckNext.isOwner,
-    auth,
-    check("block_id").notEmpty().isInt().toInt(),
-    basic.unblockUser
-  );
-
-  // report user
-  router.post(
-    "/report",
-    authCheckNext.isOwner,
-    auth,
-    check("report_id").notEmpty().isInt().toInt(),
-    basic.reportUser
-  );
+  )
 
   app.use("/api", router);
-  app.use("/api/forum", forumRouter);
-  app.use("/api/notifications", notificationsRouter);
 };

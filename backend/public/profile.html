@@ -6,12 +6,12 @@
     <link rel="stylesheet" href="../css/profile-style.css" />
     <title>Profile</title>
   </head>
-  <body>
+  <body style="visibility:hidden">
     <header class="fixed-header" role="banner">
       <div class="container-fluid">
         <!-- Site Title  -->
         <div class="site-title col-xs-3">
-          <a href="/"><h1>KU Friend Matcher</h1></a>
+          <a href="/"><h1>SCU Friend Matcher</h1></a>
         </div>
         <a href="/auth/logout"><div class="logout-button">Log out</div></a>
       </div>
@@ -45,6 +45,15 @@
       <div class="remove-button-wrapper">
         <button class="remove-friend-button">Remove as friend</button>
       </div>
+      <div class="block-user-wrapper">
+        <button class="block-user-button">Block user</button>
+      </div>
+      <div class="unblock-user-wrapper">
+        <button class="unblock-user-button">Unblock user</button>
+      </div>
+      <div class="report-user-wrapper">
+        <button class="report-user-button">Report user</button>
+      </div>
     </menu>
 
     <main>
@@ -62,5 +71,6 @@
     <script type="module" src="../scripts/getCookie.js"></script>
     <script type="module" src="../scripts/profile.js"></script>
     <script type="module" src="../scripts/addRemoveFriendProfile.js"></script>
+    <script type="module" src="../scripts/blockUserButton.js"></script>
   </body>
 </html>

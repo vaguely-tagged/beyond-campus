@@ -1,6 +1,42 @@
-<html>
-    <body style="visibility:hidden">
-        <h1>Admin Center</h1>
-        <script type="module" src="../scripts/admin.js"></script>
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/admin-style.css" />
+    <title>Admin Center</title>
+  </head>
+  <body style="visibility:hidden">
+    <header class="fixed-header" role="banner">
+      <div class="container-fluid">
+        <!-- Site Title  -->
+        <div class="site-title col-xs-3">
+          <h1>Admin Center</h1>
+        </div>
+        <a href="/auth/logout"><div class="logout-button">Log out</div></a>
+      </div>
+    </header>
+    <main>
+      <section>
+        <h2>Users</h2>
+        <a href="/admin/users">
+          <button class="admin-button" id="usersButton">View Users</button>
+        </a>
+        <a href="/admin/view-reports">
+          <button class="admin-button" id="reviewReportButton">Review Reports</button>
+          <button class="admin-button" id="permissionsButton">Review Admin Permissions</button>
+        </a>
+
+        <h2>Hashtags</h2>
+        <a href="/admin/hashtags">
+            <button class="admin-button" id="editHashtagButton">Edit Hashtags</button>
+        </a>
+
+        <h2>Announcements</h2>
+        <button class="admin-button" id="makeAnnouncementButton">Make an Announcement</button>
+        <butotn class="admin-button" id="editAnnouncementsButton">Edit Announcements</butotn>
+      </section>
+    </main>
+    <script type="module" src="../scripts/admin.js"></script>
+  </body>
 </html>
