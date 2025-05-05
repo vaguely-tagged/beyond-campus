@@ -22,6 +22,12 @@ module.exports = (app) => {
     auth,
     admin.getUsers
   );
+  router.delete(
+    "/users",
+    authCheckNext.isOwner,
+    auth,
+    admin.removeUser
+  );
   // add a tag
   router.post(
     "/hashtags",

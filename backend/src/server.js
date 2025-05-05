@@ -22,7 +22,7 @@ app.use(
 );
 app.use(
   session({
-    secret: "~~~",
+    secret: process.env.TOKEN_SECRET,
     resave: false,
     saveUninitialized: true,
     store: new FileStore(),
@@ -62,9 +62,9 @@ app.get("/main", (req, res) => {
     res.redirect("/auth/login");
     return false;
   }
-
+  if (authCheck.isAdmin(req,res)) res.sendFile(path.resolve("../public/admin.html"));
   // If the user is authenticated, it generates an HTML response.?
-  res.sendFile(path.resolve("../public/main.html"));
+  else res.sendFile(path.resolve("../public/main.html"));
 });
 
 app.get("/question", (req, res) => {

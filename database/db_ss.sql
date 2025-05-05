@@ -243,3 +243,15 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2023-11-07  0:45:42
+
+--
+-- Table structure for table `blacklist`
+--
+
+DROP TABLE IF EXISTS `blacklist`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `blacklist` (
+  `user_id` int NOT NULL,
+  `email` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

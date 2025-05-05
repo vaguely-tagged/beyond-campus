@@ -61,8 +61,8 @@ UserHashtag.insertHashtag = (user_id, tag_number, result) => {
 
 UserHashtag.getPotentialFriends = (user_id, tag_numbers, result) => {
   db.query(
-    "SELECT * FROM userhashtag WHERE user_id != ? and tag_number in (?)",
-    [user_id, tag_numbers],
+    "SELECT * from userhashtag WHERE user_id != ? AND tag_number IN (?) AND user_id NOT IN (SELECT user_blocker FROM block WHERE user_blocked=? UNION SELECT user_blocked FROM block WHERE user_blocker=?);",
+    [user_id, tag_numbers, user_id, user_id],
     (err, res) => {
       if (err) {
         // console.log("error: ", err);
