@@ -407,8 +407,8 @@ a {
   border-radius: 6px;
   padding: 8px 0;
   position: absolute;
-  right: 0%;
-  margin-top:-100%
+  left: 30px;
+  margin-top:-100px;
 }
 
 .popup .popuptext::after {
@@ -440,4 +440,8 @@ a {
 .option-button:hover {
     background-color: transparent;
     color:white;
+}
+
+.blocked-users {
+  background-color: white;
 }

@@ -161,6 +161,14 @@ module.exports = (app) => {
     basic.getBlocks
   );
 
+  // get blocks (blocker & blocked)
+  router.get(
+    "/block/all",
+    authCheckNext.isOwner,
+    auth,
+    basic.getBlocked
+  );
+
   // report user
   router.post(
     "/report",
