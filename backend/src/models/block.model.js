@@ -47,4 +47,20 @@ Block.getBlocks = (user_id, result) => {
   )
 }
 
+Block.getBlocked = (user_id, result) => {
+  db.query(
+    "SELECT user_blocker FROM block WHERE user_blocked=? UNION SELECT user_blocked FROM block WHERE user_blocker=?;",
+    [user_id,user_id],
+    (err, res) => {
+      if (err) {
+        result(err,null);
+        return;
+      } else {
+        result(null, res);
+        return;
+      }
+    }
+  )
+}
+
 module.exports = Block;

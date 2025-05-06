@@ -104,10 +104,27 @@ window.addEventListener("load", () => {
         const removeFriendButton = document.querySelector(
           ".remove-friend-button"
         );
-        removeFriendButton.style.display = "block";
-      }
-    })
-    .catch((error) => {
-      console.error("Error getting friends: ", error);
-    });
+          removeFriendButton.style.display = "block";
+        }
+      })
+      .catch((error) => {
+        console.error("Error getting friends: ", error);
+      });
+
+      fetch("/api/block",{
+        method: "GET",
+        headers
+      })
+        .then((response) => response.json().then((data) => {
+          if (!data.data) return;
+          var blocks = data.data;
+          if (blocks.every((b) => b.user_id != user_id)) {
+            document.querySelector(".block-user-button").style.display="block";
+          }
+          else document.querySelector(".unblock-user-button").style.display="block";
+        }));
+  } else {
+    console.error("JWT token not found in cookie");
+    window.location.href = "/auth/logout";
+  }
 });
