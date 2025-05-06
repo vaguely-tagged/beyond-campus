@@ -10,6 +10,9 @@ $header-height: 60px;
 }
 
 body {
+  background-image: url("SCDI.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
   height: 100%;
   width: 100%;
   margin: 0;
@@ -403,3 +406,4 @@ a {
   font-size: 14px;
   font-weight: bold;
 }
+

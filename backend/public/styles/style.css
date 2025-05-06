@@ -6,12 +6,14 @@
   font-family: "Poppins", sans-serif;
 }
 body {
-  height: 100vh;
+  background-image: url("SCDI.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px;
-  background: #ffffff;
+  
 }
 .container {
   max-width: 700px;
@@ -189,3 +191,4 @@ form .button input:hover {
     flex-direction: column;
   }
 }
+

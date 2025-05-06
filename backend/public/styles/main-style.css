@@ -10,6 +10,9 @@ $header-height: 60px;
 }
 
 body {
+  background-image: url("SCDI.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
   height: 100%;
   width: 100%;
   margin: 0;
@@ -358,7 +361,7 @@ a {
   margin: 10px 0;
 }
 
-.remove-friend-button, .request-button {
+.remove-friend-button {
   background-color: #842434;
   color: #fff;
   border: none;
@@ -369,7 +372,7 @@ a {
   transition: background-color 0.2s;
 }
 
-.remove-friend-button:hover, .request-button {
+.remove-friend-button:hover {
   background-color: #741424;
 }
 
