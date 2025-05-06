@@ -51,6 +51,14 @@ exports.getReportPage = (req, res) => {
   }
 }
 
+exports.getForum = (req, res) => {
+  if (authCheck.isOwner(req,res)) res.sendFile(path.resolve("../public/adminForum.html"));
+  else {
+    res.redirect("/main");
+    return false;
+  }
+}
+
 exports.getUsers = (req, res) => {
   if (authCheck.isOwner(req, res)) {
     User.getAllUsers(req.session.nickname, (err, data) => {

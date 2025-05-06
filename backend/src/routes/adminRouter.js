@@ -16,6 +16,8 @@ module.exports = (app) => {
 
   router.get("/view-reports", admin.getReportPage);
 
+  router.get("/forum",admin.getForum);
+
   router.get(
     "/users/all",
     authCheckNext.isOwner,

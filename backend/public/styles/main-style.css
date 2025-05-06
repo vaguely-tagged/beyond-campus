@@ -390,3 +390,51 @@ a {
   font-size: 14px;
   font-weight: bold;
 }
+
+.popup {
+  cursor: pointer;
+}
+
+.popup .popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #842434;
+  color: white;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  right: 0%;
+  margin-top:-100%
+}
+
+.popup .popuptext::after {
+  content:"";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #842434 transparent transparent transparent;
+}
+
+.popup .show {
+    visibility: visible;
+}
+
+.option-button {
+    display: inline-block;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 6px;
+    background-color: white;
+    color: #842434;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.option-button:hover {
+    background-color: transparent;
+    color:white;
+}
