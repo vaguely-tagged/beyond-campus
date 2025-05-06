@@ -52,4 +52,20 @@ Post.getPostById = (post_id, result) => {
   );
 };
 
+Post.deletePost = (post_id, result) => {
+  db.query(
+    "DELETE FROM post WHERE post_id=?;",
+    [post_id],
+    (err, res) => {
+      if (err) {
+        result(err,null);
+        return;
+      } else {
+        result(null, res);
+        return;
+      }
+    }
+  );
+}
+
 module.exports = Post; 

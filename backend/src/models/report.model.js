@@ -3,17 +3,21 @@ const db = require("./db.js");
 const Report = function(database) {};
 
 Report.reportUser = (user_id, other_id, message, notes, result) => {
-    db.query(
-        "INSERT INTO report (user_reporter, user_reported,message,notes) values (?,?,?,?);",
-        [user_id,other_id,message,notes],
-        (err, res) => {
-            if (err) {
-              result(err, null);
-              return;
-            } else {
-              result(null, null);
-              return;
-    }});
+  if (user_id == other_id) {
+    result(null, null);
+    return;
+  }
+  db.query(
+      "INSERT INTO report (user_reporter, user_reported,message,notes) values (?,?,?,?);",
+      [user_id,other_id,message,notes],
+      (err, res) => {
+          if (err) {
+            result(err, null);
+            return;
+          } else {
+            result(null, null);
+            return;
+  }});
 }
 
 Report.getReports = (user_id, result) => {

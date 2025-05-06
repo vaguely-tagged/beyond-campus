@@ -20,6 +20,13 @@ router.post(
 // Get all forum posts (no authentication required)
 router.get("/posts", forumController.getAllPosts);
 
+router.delete(
+  "/posts",
+  authCheckNext.isOwner,
+  auth,
+  forumController.deletePost
+);
+
 // Get a single forum post by ID (no authentication required)
 router.get("/posts/:post_id", forumController.getPostById);
 
@@ -34,5 +41,12 @@ router.post(
 
 // Get all comments for a post (no authentication required)
 router.get("/posts/:post_id/comments", forumController.getCommentsByPostId);
+
+router.delete(
+  "/comments",
+  authCheckNext.isOwner,
+  auth,
+  forumController.deleteComment
+);
 
 module.exports = router; 
