@@ -46,7 +46,8 @@ header {
   color: white;
 }
 
-.logout-button {
+.logout-button,
+.message-button {
   background: white;
   padding: 5px 10px;
   border-radius: 10px;
@@ -58,7 +59,8 @@ header {
 }
 
 /* Change the background color and add a stronger shadow on hover */
-.logout-button:hover {
+.logout-button:hover,
+.message-button:hover {
   background: #f0f0f0; /* Change to your desired hover background color */
   box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5); /* Enhance the shadow on hover */
 }
@@ -361,7 +363,8 @@ a {
   margin: 10px 0;
 }
 
-.remove-friend-button {
+.remove-friend-button,
+.message-friend-button {
   background-color: #842434;
   color: #fff;
   border: none;
@@ -372,7 +375,8 @@ a {
   transition: background-color 0.2s;
 }
 
-.remove-friend-button:hover {
+.remove-friend-button:hover,
+.message-friend-button:hover {
   background-color: #741424;
 }
 

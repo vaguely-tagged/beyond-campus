@@ -1,0 +1,127 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+$text-color: #747373;
+$header-height: 60px;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #fbfefc;
+}
+
+header {
+  position: fixed;
+  width: 100%;
+  margin: 0;
+  top: 0;
+  box-sizing: border-box;
+  background: #842434;
+  padding: 0 50px 0 50px;
+  height: $header-height;
+  z-index: 999;
+}
+
+.container-fluid {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.site-title h1 {
+  font-size: 24px;
+  color: white;
+}
+
+.logout-button,
+.message-button {
+  background: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+  color: black;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Add a subtle shadow */
+  transition: box-shadow 0.3s ease, background-color 0.3s ease; /* Add a smooth transition effect */
+
+  text-decoration: none; /* Remove the underline */
+}
+
+/* Change the background color and add a stronger shadow on hover */
+.logout-button:hover,
+.message-button:hover {
+  background: #f0f0f0; /* Change to your desired hover background color */
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5); /* Enhance the shadow on hover */
+}
+
+a {
+  text-decoration: none;
+}
+
+.message-container {
+  margin:auto;
+  padding-top:25%;
+}
+
+ul {
+  list-style: none;
+  clear: both;
+  float: unset;
+  margin:auto;
+}
+li {
+  border: 1px solid #842434;
+  margin: 10px;
+  padding: 5px;
+  width: 60%;
+  text-wrap: wrap;
+  word-wrap: break-word;
+  border-radius: 8px;
+}
+
+.from {
+    text-align:right;
+    margin-left: 20%;
+}
+
+.to {
+    text-align:left;
+    margin-right:20%;
+}
+
+.message-box {
+    width: 80%; /* Use 100% width for a cleaner look */
+    display: block;
+    margin: auto;
+    margin-bottom: 20px;
+    height: 120px;
+    padding: 10px;
+    border: 2px solid #842434; /* Red border color */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 16px; /* Adjust font size as needed */
+}
+
+#send-button {
+    width: 80%;
+    background-color: #842434;
+    color: white;
+    font-size: 14px;
+    padding: 8px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    display: block;
+    margin: auto;
+}
+
+#send-button:hover {
+  background-color: #a63c4c; /* Lighter red on hover for buttons */
+}

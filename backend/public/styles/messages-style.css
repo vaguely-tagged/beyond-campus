@@ -1,0 +1,81 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+$text-color: #747373;
+$header-height: 60px;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #fbfefc;
+}
+
+header {
+  position: fixed;
+  width: 100%;
+  margin: 0;
+  top: 0;
+  box-sizing: border-box;
+  background: #842434;
+  padding: 0 50px 0 50px;
+  height: $header-height;
+  z-index: 999;
+}
+
+.container-fluid {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.site-title h1 {
+  font-size: 24px;
+  color: white;
+}
+
+.logout-button {
+  background: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+  color: black;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Add a subtle shadow */
+  transition: box-shadow 0.3s ease, background-color 0.3s ease; /* Add a smooth transition effect */
+
+  text-decoration: none; /* Remove the underline */
+}
+
+/* Change the background color and add a stronger shadow on hover */
+.logout-button:hover {
+  background: #f0f0f0; /* Change to your desired hover background color */
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5); /* Enhance the shadow on hover */
+}
+
+a {
+  text-decoration: none;
+}
+
+.preview-container {
+  margin-top:25%;
+}
+
+ul {
+  list-style: none;
+  clear: both;
+  float: unset;
+  border: 3px solid black;
+}
+li {
+  border: 1px solid black;
+  margin: 10px;
+  cursor: pointer;
+}

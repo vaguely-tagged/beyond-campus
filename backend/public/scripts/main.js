@@ -20,6 +20,7 @@ function createUserCard(user) {
           <p><strong>Gender:</strong> ${user.gender}</p>
           <div class="hashtag-list class${user.user_id}">
           </div>
+          <button class="message-friend-button">Message Friend</button>
           <button class="remove-friend-button">Remove Friend</button>
       `;
   return card;
@@ -201,6 +202,18 @@ window.addEventListener("load", () => {
           for (const friendData of friendsData) {
             const userCard = createUserCard(friendData);
             userCardsContainer.appendChild(userCard);
+
+            const messageFriendButton = userCard.querySelector(".message-friend-button");
+            messageFriendButton.addEventListener("click", () => {
+              var body = prompt(`What do you want to say to ${friendData.username}?`);
+              fetch("/messages",{
+                method:"POST",
+                headers,
+                body: JSON.stringify({user_id: friendData.user_id, body: body}),
+              })
+                .then((response) => alert("Message sent!"));
+            });
+
             const removeFriendButton = userCard.querySelector(
               ".remove-friend-button"
             );
