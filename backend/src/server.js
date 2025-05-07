@@ -31,12 +31,14 @@ app.use(
 app.use("/css", express.static(path.resolve("../public/styles")));
 app.use("/scripts", express.static(path.resolve("../public/scripts")));
 
-// example api routes
+// api routes
 require("./routes/routes.js")(app);
 // routes for user authorization
 require("./routes/authRouter.js")(app);
 // routes for admin
 require("./routes/adminRouter.js")(app);
+// routes for messages
+require("./routes/messageRouter.js")(app);
 
 app.get("/", (req, res) => {
   // if not logged in, redirect to the login page
