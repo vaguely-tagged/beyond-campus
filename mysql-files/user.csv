@@ -1,20 +1,20 @@
-user_id,username,password,email,bio,major,year,gender,permissions
-2,Barry Burnett,$2a$12$iAhJ0NZ1x4vTwJY4LkVO4eWTU0gWN.1wTozpplxHZUgBpNvOzc36m,bburnett@school.edu,Empty,Medicine,2026,Male,0
-3,Roslyn Reeve,$2a$12$ljJs3Ue/yiFOz19MEuNiCOEdpXbC09ftjjKATrMDXMU1IFPdLDnMS,rreeve@school.edu,Empty,Mathematics,2025,Female,0
-4,Regan Bourke,$2a$12$H5kUw5ylaH88BgGX4ffEIu2czoDkAtJMDgf9p8EWM1raNGUM25QXa,rbourke@school.edu,Empty,Management,2027,Male,0
-5,Sadie Christian,$2a$12$.ToPnbUaj2ddublWab/r.O3Js3Fcsf0jAtzoTLL2wDMOZGxWFG4dq,schristian@school.edu,Empty,Biology,2026,Female,0
-6,Declan Ingram,$2a$12$0kTfZ8sbJno9d7bGB1yA3es5.bF0DDOEyEj4.Q2hmXc7gkv9N6wEa,dingram@school.edu,Empty,Physics,2025,Male,0
-7,Georgia Ford,$2a$10$rXWbpBTKrWLbd3JgxAha2u3KQtSq5bCSS85YLg8XQ.f/.wly3QpUG,gford@school.edu,Empty,Chemistry,2028,Female,0
-8,Frances Webster,$2a$10$OMbn7grOZ76mVpNeJiWmLe0O1DUp6EJ.gbBMW7PEAF9DcAPtnJPMS,fwebster@school.edu,Empty,Psychology,2026,Female,0
-9,Lily Lockwood,$2a$10$p3zhSf.8OTIEpYg28f9wqu5tBXWdoiyH3E0/vA39rYBHafZCW7P.6,llockwood@school.edu,Empty,Public Policy,2028,Female,0
-10,Damian Adams,$2a$10$ArbH9SMZ3l.yUiHJOP6a..BgL3wu2kxW4DYQ52yepGqNCqyS4uPMC,dadams@school.edu,Empty,Archaeology,2027,Male,0
-11,Page Daniels,$2a$10$cAkGOL71LgNU1ICeguuAYejgfNbEs38P3o6g3jnmTlUl6I4TgmTie,pdaniels@school.edu,Empty,Linguistics,2028,Female,0
-12,Amos Adams,$2a$10$WiCvphfiDvtFHCux/40aleWIBxJtmq23i.EoglBbdo3THnqiEdXwC,aadams@school.edu,Empty,Physics,2029,Male,0
-13,Lilian Munson,$2a$10$.JAULioWryU/0ewvbEwMh.rYJbClb6zs.Mw30K34xxRxFWPRIprK.,lmunson@school.edu,Empty,Biology,2027,Female,0
-14,Phoebe Clifton,$2a$10$okAt7Y1v8WnBN3g/hN7LqeCtlkysdNphnxM5RBpSm9N1BlV65/r8W,pclifton@school.edu,Empty,Environmental Studies,2028,Female,0
-15,Carrie Spalding,$2a$10$g21D/KKqmVLufSyMfHdvy.CK5Fq4tbPkeGd74aOe1kXBk9H/vTXpm,cspalding@school.edu,Empty,Religion,2027,Female,0
-16,Darcy Martel,$2a$10$MqzMIi87Y.ZnFkvr0ljpXeEjfoAG8xx9ZFkUOQ9x9WGx0ofr38KN.,dmartel@school.edu,Empty,Computer Science,2028,Female,0
-17,John Byrd,$2a$10$Yr8sN5u1LWvOgNGuHWnLxOuop2bbKmzIeInV4l33h3y7BT371SYGe,jbyrd@school.edu,Empty,Earth Sciences,2029,Male,0
-18,Sonny Hayden,$2a$10$pCiQbUUWEG4mA2lMJekqsuxylNlezbkydMlVgtCG.Bv8fylOaWC52,shayden@school.edu,Empty,Medicine,2027,Male,0
-19,Joel Reid,$2a$10$d4sy/SzVa0QFX44yrNg7WOt8oc.vmeqWz9nacSmGWsNKeP9QHahIa,jreid@school.edu,Empty,Biology,2029,Male,0
-20,Mabel Manning,$2a$10$QKCaINw2dVWUiSQU/i1bq.X8cv5Ei.B7fUWO6Jwws652yAtM8ZDRi,mmanning@school.edu,Empty,Agriculture,2025,Female,0
+user_id,username,password,email,bio,major,year,gender,registration_date
+2,Barry Burnett,$2a$12$iAhJ0NZ1x4vTwJY4LkVO4eWTU0gWN.1wTozpplxHZUgBpNvOzc36m,bburnett@school.edu,Empty,Medicine,2026,Male,2025-01-01
+3,Roslyn Reeve,$2a$12$ljJs3Ue/yiFOz19MEuNiCOEdpXbC09ftjjKATrMDXMU1IFPdLDnMS,rreeve@school.edu,Empty,Mathematics,2025,Female,2025-01-01
+4,Regan Bourke,$2a$12$H5kUw5ylaH88BgGX4ffEIu2czoDkAtJMDgf9p8EWM1raNGUM25QXa,rbourke@school.edu,Empty,Management,2027,Male,2025-01-01
+5,Sadie Christian,$2a$12$.ToPnbUaj2ddublWab/r.O3Js3Fcsf0jAtzoTLL2wDMOZGxWFG4dq,schristian@school.edu,Empty,Biology,2026,Female,2025-01-01
+6,Declan Ingram,$2a$12$0kTfZ8sbJno9d7bGB1yA3es5.bF0DDOEyEj4.Q2hmXc7gkv9N6wEa,dingram@school.edu,Empty,Physics,2025,Male,2025-01-01
+7,Georgia Ford,$2a$10$rXWbpBTKrWLbd3JgxAha2u3KQtSq5bCSS85YLg8XQ.f/.wly3QpUG,gford@school.edu,Empty,Chemistry,2028,Female,2025-01-01
+8,Frances Webster,$2a$10$OMbn7grOZ76mVpNeJiWmLe0O1DUp6EJ.gbBMW7PEAF9DcAPtnJPMS,fwebster@school.edu,Empty,Psychology,2026,Female,2025-01-01
+9,Lily Lockwood,$2a$10$p3zhSf.8OTIEpYg28f9wqu5tBXWdoiyH3E0/vA39rYBHafZCW7P.6,llockwood@school.edu,Empty,Public Policy,2028,Female,2025-01-01
+10,Damian Adams,$2a$10$ArbH9SMZ3l.yUiHJOP6a..BgL3wu2kxW4DYQ52yepGqNCqyS4uPMC,dadams@school.edu,Empty,Archaeology,2027,Male,2025-01-01
+11,Page Daniels,$2a$10$cAkGOL71LgNU1ICeguuAYejgfNbEs38P3o6g3jnmTlUl6I4TgmTie,pdaniels@school.edu,Empty,Linguistics,2028,Female,2025-01-01
+12,Amos Adams,$2a$10$WiCvphfiDvtFHCux/40aleWIBxJtmq23i.EoglBbdo3THnqiEdXwC,aadams@school.edu,Empty,Physics,2029,Male,2025-01-01
+13,Lilian Munson,$2a$10$.JAULioWryU/0ewvbEwMh.rYJbClb6zs.Mw30K34xxRxFWPRIprK.,lmunson@school.edu,Empty,Biology,2027,Female,2025-01-01
+14,Phoebe Clifton,$2a$10$okAt7Y1v8WnBN3g/hN7LqeCtlkysdNphnxM5RBpSm9N1BlV65/r8W,pclifton@school.edu,Empty,Environmental Studies,2028,Female,2025-01-01
+15,Carrie Spalding,$2a$10$g21D/KKqmVLufSyMfHdvy.CK5Fq4tbPkeGd74aOe1kXBk9H/vTXpm,cspalding@school.edu,Empty,Religion,2027,Female,2025-01-01
+16,Darcy Martel,$2a$10$MqzMIi87Y.ZnFkvr0ljpXeEjfoAG8xx9ZFkUOQ9x9WGx0ofr38KN.,dmartel@school.edu,Empty,Computer Science,2028,Female,2025-01-01
+17,John Byrd,$2a$10$Yr8sN5u1LWvOgNGuHWnLxOuop2bbKmzIeInV4l33h3y7BT371SYGe,jbyrd@school.edu,Empty,Earth Sciences,2029,Male,2025-01-01
+18,Sonny Hayden,$2a$10$pCiQbUUWEG4mA2lMJekqsuxylNlezbkydMlVgtCG.Bv8fylOaWC52,shayden@school.edu,Empty,Medicine,2027,Male,2025-01-01
+19,Joel Reid,$2a$10$d4sy/SzVa0QFX44yrNg7WOt8oc.vmeqWz9nacSmGWsNKeP9QHahIa,jreid@school.edu,Empty,Biology,2029,Male,2025-01-01
+20,Mabel Manning,$2a$10$QKCaINw2dVWUiSQU/i1bq.X8cv5Ei.B7fUWO6Jwws652yAtM8ZDRi,mmanning@school.edu,Empty,Agriculture,2025,Female,2025-01-01

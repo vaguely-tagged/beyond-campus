@@ -114,9 +114,9 @@ CREATE TABLE `user` (
   `major` varchar(255) NOT NULL,
   `year` year NOT NULL,
   `gender` enum('Male','Female','Other','Prefer not to say') NOT NULL,
-  `permissions` TINYINT(1),
+  `registration_date` DATE NOT NULL DEFAULT '2025-01-01',
+  `permissions` TINYINT(1) DEFAULT 0,
   `reports` int DEFAULT 0,
-  `registration_date` date NOT NULL DEFAULT '2025-01-01',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;

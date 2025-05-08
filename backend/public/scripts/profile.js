@@ -97,15 +97,11 @@ window.addEventListener("load", () => {
         (friend) => friend.user_id == user_id
       );
       if (!isFriendOfUser) {
-        const addFriendButton = document.querySelector(".add-friend-button");
-        addFriendButton.style.display = "block";
+        document.querySelector(".add-button-wrapper").classList.add("show");
       } else {
-        const removeFriendButton = document.querySelector(
-          ".remove-friend-button"
-        );
-          removeFriendButton.style.display = "block";
-        }
-      })
+        document.querySelector(".remove-button-wrapper").classList.add("show");
+      }
+    })
       .catch((error) => {
         console.error("Error getting friends: ", error);
       });
@@ -118,9 +114,11 @@ window.addEventListener("load", () => {
           if (!data.data) return;
           var blocks = data.data;
           if (blocks.every((b) => b.user_id != user_id)) {
-            document.querySelector(".block-user-button").style.display="block";
+            document.querySelector(".block-user-wrapper").classList.add("show");
           }
-          else document.querySelector(".unblock-user-button").style.display="block";
+          else {
+            document.querySelector(".unblock-user-wrapper").classList.add("show");
+          }
         }));
       document.querySelector(".report-user-button").style.display="block";
 });
