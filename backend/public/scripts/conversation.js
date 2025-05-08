@@ -4,6 +4,7 @@ const messageList = document.querySelector(".message-list");
 const user_id = getTagsFromURL();
 const messageBox = document.getElementById("message-box");
 var messages = [];
+var openPopup;
 
 function getTagsFromURL() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -17,7 +18,65 @@ const postMessage = (message) => {
     else li.className="from";
 
     li.innerHTML=`<strong>${received ? message.username : "You"}</strong><br>${message.body}`;
+    if (received) {
+        li.classList.add("popup");
+        const popupText = document.createElement("span");
+        popupText.className = "popuptext";
+
+        li.addEventListener("click", () => showPopup(popupText));
+
+        const reportButton = document.createElement("button");
+        reportButton.className = "option-button";
+        reportButton.innerText = "Report comment";
+        reportButton.addEventListener("click", () => reportComment(message.username,user_id,message.body));
+        
+        popupText.appendChild(reportButton);
+        li.appendChild(popupText);
+    }
+
     messageList.appendChild(li);
+}
+
+const showPopup = (element) => {
+  element.classList.toggle("show");
+  if (openPopup) {
+      if (openPopup == element) openPopup=null;
+      else {
+          openPopup.classList.toggle("show");
+          openPopup = element;
+      }
+  }
+  else openPopup = element;
+}
+
+const reportComment = (username, user_id, comment) => {
+  if (!window.confirm(`Are you sure you want to report ${username}?`)) return;
+  const notes = prompt("Why are you reporting this user?");
+
+  const jwt = getCookie("jwt");
+  if (jwt) {
+    // Include the token in the fetch request headers
+    const headers = new Headers({
+      Authorization: `${jwt}`,
+      "Content-Type": "application/json",
+    });
+    fetch("/api/report", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({report_id: user_id, message: comment, notes: notes}),
+    })
+    .then((response) => response.json())
+    .then((result) => {
+        window.confirm("User reported!");
+        window.location.href="/"
+    })
+    .catch((error) => {
+        console.error("Error reporting user");
+    });
+  } else {
+    console.error("JWT token not found in cookie");
+    window.location.href = "/auth/logout";
+  }
 }
 
 const getNewMessages = () => {

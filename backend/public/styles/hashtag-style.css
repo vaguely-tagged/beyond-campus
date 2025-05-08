@@ -94,9 +94,16 @@ header {
     border-radius: 6px;
     padding: 8px 0;
     position: absolute;
-    bottom: 125%;
     left: 50%;
     margin-left: -80px;
+}
+
+.category .popuptext {
+  bottom: 70%;
+}
+
+.popup .popuptext {
+  bottom: 125%;
 }
 
 .popup .popuptext::after, .category .popuptext::after {

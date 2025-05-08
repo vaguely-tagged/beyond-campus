@@ -61,7 +61,7 @@ const createCatPopup = (cell,name) => {
     popupText.appendChild(addButton);
     popupText.appendChild(renameButton);
     popupText.appendChild(deleteButton);
-    cell.appendChild(popupText);
+    cell.firstChild.appendChild(popupText);
 }
 
 window.addEventListener("load", () => {
@@ -77,7 +77,8 @@ window.addEventListener("load", () => {
         Object.keys(data).forEach((x) => {
             var row = table.insertRow();
             var cat = row.insertCell();
-            cat.appendChild(document.createTextNode(x));
+            cat.appendChild(document.createElement("span"));
+            cat.firstChild.innerHTML=x;
             cat.className="category";
             createCatPopup(cat,x);
             data[x].forEach((y) => {

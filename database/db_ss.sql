@@ -110,13 +110,13 @@ CREATE TABLE `user` (
   `username` varchar(20) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `registration_date` date NOT NULL,
   `bio` text CHARACTER SET utf8mb4,
   `major` varchar(255) NOT NULL,
   `year` year NOT NULL,
   `gender` enum('Male','Female','Other','Prefer not to say') NOT NULL,
   `permissions` TINYINT(1),
   `reports` int DEFAULT 0,
+  `registration_date` date NOT NULL DEFAULT '2025-01-01',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
