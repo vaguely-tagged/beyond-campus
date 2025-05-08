@@ -2,6 +2,8 @@ import { getCookie } from "./getCookie.js";
 import { category_noseparate } from "./category_noseparate.js";
 
 var openPopup;
+var blockUsers = [];
+var userId;
 
 function decodeHtmlEntities(text) {
   const textarea = document.createElement("textarea");
@@ -138,6 +140,7 @@ window.addEventListener("load", () => {
       response.json()
         .then((userData) => {
           if (userData.perm) window.location.href = "/admin/adminCenter";
+          userId = userData.user_id;
 
           // Update the username and bio on the page with fetched data
           const usernameElement = document.querySelector(".username");
@@ -189,6 +192,16 @@ window.addEventListener("load", () => {
     })
     .catch((error) => {
       console.error("Error fetching hashtag data:", error);
+    });
+
+  fetch("/api/block/all", {
+    method: "GET",
+    headers,
+  })
+    .then((response) => {
+      response.json().then((data) => {
+        data.data.forEach((x) => blockUsers.push(x.user_blocker));
+      });
     });
 
   fetch("/api/friends", {
@@ -395,6 +408,7 @@ window.addEventListener("load", () => {
           } else {
             forumPostsContainer.innerHTML = "";
             data.data.forEach((post) => {
+              if (blockUsers.includes(post.user_id)) return;
               const postDiv = document.createElement("div");
               postDiv.className = "forum-post";
               postDiv.innerHTML = `
@@ -409,7 +423,7 @@ window.addEventListener("load", () => {
                 <hr>
               `;
               postDiv.firstElementChild.id="post"+post.post_id;
-              createUserPopup(postDiv.firstElementChild, post, true);
+              if (post.user_id != userId) createUserPopup(postDiv.firstElementChild, post, true);
               forumPostsContainer.appendChild(postDiv);
               loadCommentsForPost(post.post_id);
               // Add event listener for new comment form
@@ -441,7 +455,6 @@ window.addEventListener("load", () => {
         }
       })
       .catch((err) => {
-        console.log(err);
         forumPostsContainer.innerHTML = '<p>Error loading forum posts.</p>';
       });
   }
@@ -463,17 +476,14 @@ window.addEventListener("load", () => {
           } else {
             commentsDiv.innerHTML="";
             data.data.forEach((comment) => {
+              if (blockUsers.includes(comment.user_id)) return;
               var commentDiv = document.createElement("div");
               commentDiv.className = "forum-comment";
               commentDiv.id = "comment"+comment.comment_id;
               commentDiv.innerHTML = `<strong>${comment.username || comment.user_id || "User"}:</strong> ${comment.body}`;
-              createUserPopup(commentDiv, comment, false);
+              if (comment.user_id != userId) createUserPopup(commentDiv, comment, false);
               commentsDiv.appendChild(commentDiv);
             });
-            /*
-            commentsDiv.innerHTML = data.data.map(
-              (comment) => `<div class="forum-comment"><strong>${comment.user_id || comment.username || "User"}:</strong> ${comment.body}</div>`
-            ).join("");*/
           }
         } else {
           commentsDiv.innerHTML = '<em>Failed to load comments.</em>';
