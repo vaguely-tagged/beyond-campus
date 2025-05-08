@@ -61,7 +61,6 @@ exports.processSignup = (req, res) => {
         if (results.length <= 0 && password == confirmPassword) {
           const currentDate = new Date();
           const formattedDate = currentDate.toISOString().split("T")[0]; // Get the date portion
-
           db.query(
             "INSERT INTO user (username, password, email, major, year, gender, registration_date, permissions) VALUES(?,?,?,?,?,?,?,?)",
             [username, password_e, email, major, year, gender, formattedDate, 0],
