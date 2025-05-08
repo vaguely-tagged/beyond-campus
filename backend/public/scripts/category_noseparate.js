@@ -16,7 +16,7 @@ export const category_noseparate = fetch("/api/hashtags", {
   .then((data) => {
     var c = {};
     data.data.forEach((x) => {
-      c[String(x.tag_number)]=x.content;
+      c[x.tag_number]=x.content;
     });
     return c;
   });

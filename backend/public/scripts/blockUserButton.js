@@ -53,7 +53,7 @@ unblockUserButton.addEventListener("click", () => {
     .then((response) => response.json())
     .then((result) => {
         window.confirm("User unblocked!");
-        window.location.href="/"
+        window.location.reload();
     })
     .catch((error) => {
         console.error("Error unblocking user");
@@ -83,7 +83,7 @@ reportUserButton.addEventListener("click", () => {
     .then((response) => response.json())
     .then((result) => {
         window.confirm("User reported!");
-        window.location.href="/"
+        window.location.reload();
     })
     .catch((error) => {
         console.error("Error reporting user");

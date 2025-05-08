@@ -10,6 +10,9 @@ $header-height: 60px;
 }
 
 body {
+  background-image: url("SCDI.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
   height: 100%;
   width: 100%;
   margin: 0;
@@ -358,17 +361,19 @@ a {
 }
 
 .add-button-wrapper,
-.remove-button-wrapper {
+.remove-button-wrapper,
+.block-user-wrapper,
+.unblock-user-wrapper,
+.report-user-wrapper {
+  display:none;
   width: 100%;
-  display: flex;
   flex-direction: row;
   justify-content: center;
   box-sizing: border-box;
   margin-top: 15px;
 }
 
-.add-friend-button,
-.remove-friend-button {
+.toggle-button {
   background-color: #842434;
   display: none;
   color: #fff;
@@ -381,9 +386,13 @@ a {
   transition: background-color 0.2s;
 }
 
-.add-friend-button:hover,
-.remove-friend-button:hover {
+.toggle-button:hover {
   background-color: #741424;
+}
+
+.show .toggle-button,
+.show {
+  display:block;
 }
 
 .hashtag-list {
@@ -403,3 +412,4 @@ a {
   font-size: 14px;
   font-weight: bold;
 }
+

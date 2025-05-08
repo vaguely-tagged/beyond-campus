@@ -20,4 +20,12 @@ module.exports = {
     }
     return authStatusUI;
   },
+  
+  isAdmin: function (request, response) {
+    if (request.session.perm) {
+      return true;
+    } else {
+      return false;
+    }
+  },
 };

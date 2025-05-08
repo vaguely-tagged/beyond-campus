@@ -16,11 +16,19 @@ module.exports = (app) => {
 
   router.get("/view-reports", admin.getReportPage);
 
+  router.get("/forum",admin.getForum);
+
   router.get(
     "/users/all",
     authCheckNext.isOwner,
     auth,
     admin.getUsers
+  );
+  router.delete(
+    "/users",
+    authCheckNext.isOwner,
+    auth,
+    admin.removeUser
   );
   // add a tag
   router.post(

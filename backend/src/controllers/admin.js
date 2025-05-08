@@ -51,6 +51,14 @@ exports.getReportPage = (req, res) => {
   }
 }
 
+exports.getForum = (req, res) => {
+  if (authCheck.isOwner(req,res)) res.sendFile(path.resolve("../public/adminForum.html"));
+  else {
+    res.redirect("/main");
+    return false;
+  }
+}
+
 exports.getUsers = (req, res) => {
   if (authCheck.isOwner(req, res)) {
     User.getAllUsers(req.session.nickname, (err, data) => {
@@ -295,6 +303,27 @@ exports.deleteReport = (req, res) => {
           res.status(500).send({
             message:
               "Error deleting report",
+          });
+      } else
+        res.send({
+          success: true,
+          data: data,
+        });
+    });
+  }
+  else {
+      res.redirect("/main");
+      return false;
+  }
+}
+
+exports.removeUser = (req, res) => {
+  if (authCheck.isOwner(req, res)) {
+    User.removeAccount(req.session.nickname, req.body.user_id, (err, data) => {
+      if (err) {
+          res.status(500).send({
+            message:
+              "Error deleting user",
           });
       } else
         res.send({

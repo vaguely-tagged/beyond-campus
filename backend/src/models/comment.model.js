@@ -34,4 +34,20 @@ Comment.getCommentsByPostId = (post_id, result) => {
   );
 };
 
+Comment.deleteComment = (comment_id, result) => {
+  db.query(
+    "DELETE FROM comment WHERE comment_id=?;",
+    [comment_id],
+    (err, res) => {
+      if (err) {
+        result(err,null);
+        return;
+      } else {
+        result(null, res);
+        return;
+      }
+    }
+  );
+}
+
 module.exports = Comment; 

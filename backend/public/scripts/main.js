@@ -1,6 +1,10 @@
 import { getCookie } from "./getCookie.js";
 import { category_noseparate } from "./category_noseparate.js";
 
+var openPopup;
+var blockUsers = [];
+var userId;
+
 function decodeHtmlEntities(text) {
   const textarea = document.createElement("textarea");
   textarea.innerHTML = text;
@@ -18,6 +22,7 @@ function createUserCard(user) {
           <p><strong>Gender:</strong> ${user.gender}</p>
           <div class="hashtag-list class${user.user_id}">
           </div>
+          <button class="message-friend-button">Message Friend</button>
           <button class="remove-friend-button">Remove Friend</button>
       `;
   return card;
@@ -39,6 +44,75 @@ function createRequestCard(user) {
       `;
 
   return card;
+}
+
+const createUserPopup = (element, data, is_post) => {
+  element.classList.add("popup");
+  var popupId;
+  if (is_post) popupId = "p" + data.post_id;
+  else popupId = "c" + data.comment_id;
+  element.addEventListener("click", () => showPopup(popupId));
+    
+  const popupText = document.createElement("span");
+  popupText.className = "popuptext";
+  popupText.id = popupId;
+
+  const profileButton = document.createElement("button");
+  profileButton.className = "option-button";
+  profileButton.innerText = "View profile";
+  profileButton.addEventListener("click", () => window.location.href = `/profile?user_id=${data.user_id}`)
+
+  const reportButton = document.createElement("button");
+  reportButton.className = "option-button";
+  reportButton.innerText = "Report comment";
+  reportButton.addEventListener("click", () => reportComment(data.username,data.user_id,data.body));
+  
+  popupText.appendChild(profileButton);
+  popupText.appendChild(reportButton);
+  element.appendChild(popupText);
+}
+
+const showPopup = (id) => {
+  const popup = document.getElementById(id);
+  popup.classList.toggle("show");
+  if (openPopup) {
+      if (openPopup == id) openPopup=null;
+      else {
+          document.getElementById(openPopup).classList.toggle("show");
+          openPopup = id;
+      }
+  }
+  else openPopup = id;
+}
+
+const reportComment = (username, user_id, comment) => {
+  if (!window.confirm(`Are you sure you want to report ${username}?`)) return;
+  const notes = prompt("Why are you reporting this user?");
+
+  const jwt = getCookie("jwt");
+  if (jwt) {
+    // Include the token in the fetch request headers
+    const headers = new Headers({
+      Authorization: `${jwt}`,
+      "Content-Type": "application/json",
+    });
+    fetch("/api/report", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({report_id: user_id, message: comment, notes: notes}),
+    })
+    .then((response) => response.json())
+    .then((result) => {
+        window.confirm("User reported!");
+        window.location.href="/"
+    })
+    .catch((error) => {
+        console.error("Error reporting user");
+    });
+  } else {
+    console.error("JWT token not found in cookie");
+    window.location.href = "/auth/logout";
+  }
 }
 
 const userCardsContainer = document.querySelector(".friends");
@@ -66,6 +140,7 @@ window.addEventListener("load", () => {
       response.json()
         .then((userData) => {
           if (userData.perm) window.location.href = "/admin/adminCenter";
+          userId = userData.user_id;
 
           // Update the username and bio on the page with fetched data
           const usernameElement = document.querySelector(".username");
@@ -100,14 +175,11 @@ window.addEventListener("load", () => {
     .then((response) => {
       response.json()
         .then((data) => {
-
-          console.log("recieved data of", data)
           for (const hashtag of data.data) {
             const hashtagsDiv = document.querySelector(".hashtags");
             const hashtagSpan = document.createElement("span");
             hashtagSpan.className = "hashtag";
             category_noseparate.then((d) => {
-              console.log(d);
               hashtagSpan.textContent =
                 "#" + d[hashtag.tag_number];
             });
@@ -122,6 +194,16 @@ window.addEventListener("load", () => {
       console.error("Error fetching hashtag data:", error);
     });
 
+  fetch("/api/block/all", {
+    method: "GET",
+    headers,
+  })
+    .then((response) => {
+      response.json().then((data) => {
+        data.data.forEach((x) => blockUsers.push(x.user_blocker));
+      });
+    });
+
   fetch("/api/friends", {
     method: "GET",
     headers,
@@ -129,11 +211,22 @@ window.addEventListener("load", () => {
     .then((response) => {
       response.json()
         .then((data) => {
-          console.log("UP HERE DATA I GOT BACK IS", data)
           const friendsData = data.data;
           for (const friendData of friendsData) {
             const userCard = createUserCard(friendData);
             userCardsContainer.appendChild(userCard);
+
+            const messageFriendButton = userCard.querySelector(".message-friend-button");
+            messageFriendButton.addEventListener("click", () => {
+              var body = prompt(`What do you want to say to ${friendData.username}?`);
+              fetch("/messages",{
+                method:"POST",
+                headers,
+                body: JSON.stringify({user_id: friendData.user_id, body: body}),
+              })
+                .then((response) => alert("Message sent!"));
+            });
+
             const removeFriendButton = userCard.querySelector(
               ".remove-friend-button"
             );
@@ -186,7 +279,6 @@ window.addEventListener("load", () => {
     .then((response) => {
       response.json()
         .then((data) => {
-          console.log("DATA I GOT BACK IS", data)
           const requestsData = data.data;
           for (const requestData of requestsData) {
             const requestCard = createRequestCard(requestData);
@@ -316,6 +408,7 @@ window.addEventListener("load", () => {
           } else {
             forumPostsContainer.innerHTML = "";
             data.data.forEach((post) => {
+              if (blockUsers.includes(post.user_id)) return;
               const postDiv = document.createElement("div");
               postDiv.className = "forum-post";
               postDiv.innerHTML = `
@@ -329,6 +422,8 @@ window.addEventListener("load", () => {
                 </form>
                 <hr>
               `;
+              postDiv.firstElementChild.id="post"+post.post_id;
+              if (post.user_id != userId) createUserPopup(postDiv.firstElementChild, post, true);
               forumPostsContainer.appendChild(postDiv);
               loadCommentsForPost(post.post_id);
               // Add event listener for new comment form
@@ -359,7 +454,7 @@ window.addEventListener("load", () => {
           forumPostsContainer.innerHTML = '<p>Failed to load forum posts.</p>';
         }
       })
-      .catch(() => {
+      .catch((err) => {
         forumPostsContainer.innerHTML = '<p>Error loading forum posts.</p>';
       });
   }
@@ -379,9 +474,16 @@ window.addEventListener("load", () => {
           if (data.data.length === 0) {
             commentsDiv.innerHTML = '<em>No comments yet.</em>';
           } else {
-            commentsDiv.innerHTML = data.data.map(
-              (comment) => `<div class="forum-comment"><strong>${comment.user_id || comment.username || "User"}:</strong> ${comment.body}</div>`
-            ).join("");
+            commentsDiv.innerHTML="";
+            data.data.forEach((comment) => {
+              if (blockUsers.includes(comment.user_id)) return;
+              var commentDiv = document.createElement("div");
+              commentDiv.className = "forum-comment";
+              commentDiv.id = "comment"+comment.comment_id;
+              commentDiv.innerHTML = `<strong>${comment.username || comment.user_id || "User"}:</strong> ${comment.body}`;
+              if (comment.user_id != userId) createUserPopup(commentDiv, comment, false);
+              commentsDiv.appendChild(commentDiv);
+            });
           }
         } else {
           commentsDiv.innerHTML = '<em>Failed to load comments.</em>';

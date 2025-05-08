@@ -152,6 +152,22 @@ module.exports = (app) => {
     check("block_id").notEmpty().isInt().toInt(),
     basic.unblockUser
   );
+  
+  // get blocks
+  router.get(
+    "/block",
+    authCheckNext.isOwner,
+    auth,
+    basic.getBlocks
+  );
+
+  // get blocks (blocker & blocked)
+  router.get(
+    "/block/all",
+    authCheckNext.isOwner,
+    auth,
+    basic.getBlocked
+  );
 
   // report user
   router.post(

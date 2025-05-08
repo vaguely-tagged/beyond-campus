@@ -10,6 +10,9 @@ $header-height: 60px;
 }
 
 body {
+  background-image: url("SCDI.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
   height: 100%;
   width: 100%;
   margin: 0;
@@ -43,7 +46,8 @@ header {
   color: white;
 }
 
-.logout-button {
+.logout-button,
+.message-button {
   background: white;
   padding: 5px 10px;
   border-radius: 10px;
@@ -55,7 +59,8 @@ header {
 }
 
 /* Change the background color and add a stronger shadow on hover */
-.logout-button:hover {
+.logout-button:hover,
+.message-button:hover {
   background: #f0f0f0; /* Change to your desired hover background color */
   box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5); /* Enhance the shadow on hover */
 }
@@ -358,7 +363,8 @@ a {
   margin: 10px 0;
 }
 
-.remove-friend-button, .request-button {
+.remove-friend-button,
+.message-friend-button {
   background-color: #842434;
   color: #fff;
   border: none;
@@ -369,7 +375,8 @@ a {
   transition: background-color 0.2s;
 }
 
-.remove-friend-button:hover, .request-button {
+.remove-friend-button:hover,
+.message-friend-button:hover {
   background-color: #741424;
 }
 
@@ -389,4 +396,57 @@ a {
   border-radius: 25px;
   font-size: 14px;
   font-weight: bold;
+}
+
+.popup {
+  cursor: pointer;
+  position:relative;
+}
+
+.popup .popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #842434;
+  color: white;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  bottom: 120%;
+  left: 0%;
+}
+
+.popup .popuptext::after {
+  content:"";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #842434 transparent transparent transparent;
+}
+
+.popup .show {
+    visibility: visible;
+}
+
+.option-button {
+    display: inline-block;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 6px;
+    background-color: white;
+    color: #842434;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.option-button:hover {
+    background-color: transparent;
+    color:white;
+}
+
+.blocked-users {
+  background-color: white;
 }

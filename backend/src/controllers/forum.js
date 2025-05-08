@@ -83,6 +83,27 @@ exports.getPostById = (req, res) => {
   });
 };
 
+exports.deletePost = (req, res) => {
+  Post.deletePost(req.body.post_id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found post with ID ${post_id}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Not found post with ID " + post_id,
+        });
+      }
+    } else {
+      res.send({
+        success: true,
+        data: data,
+      });
+    }
+  });
+}
+
 // Create a comment on a post
 exports.createComment = (req, res) => {
   const errors = validationResult(req);
@@ -142,3 +163,24 @@ exports.getCommentsByPostId = (req, res) => {
     }
   });
 }; 
+
+exports.deleteComment = (req, res) => {
+  Comment.deleteComment(req.body.comment_id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found comment with ID ${comment_id}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving comment with ID " + comment_id,
+        });
+      }
+    } else {
+      res.send({
+        success: true,
+        data: data,
+      });
+    }
+  });
+}

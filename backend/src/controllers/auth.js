@@ -42,10 +42,10 @@ exports.processSignup = (req, res) => {
   } else {
     const { username, email, major, year, password, confirmPassword, gender } =
       data;
-    const password_e = bcrypt.hashSync(password, 10); // saltOrRounds: salt를 몇 번 돌릴건지.
+    const password_e = bcrypt.hashSync(password, 10); // saltOrRounds: salt.
     db.query(
-      "SELECT * FROM user WHERE email = ?;",
-      [email],
+      "SELECT user_id,email FROM user WHERE email = ? UNION SELECT * FROM blacklist WHERE email=?;",
+      [email,email],
       function (error, results, fields) {
         // The results of the query are handled in a callback function.?
         //
@@ -61,7 +61,6 @@ exports.processSignup = (req, res) => {
         if (results.length <= 0 && password == confirmPassword) {
           const currentDate = new Date();
           const formattedDate = currentDate.toISOString().split("T")[0]; // Get the date portion
-
           db.query(
             "INSERT INTO user (username, password, email, major, year, gender, registration_date, permissions) VALUES(?,?,?,?,?,?,?,?)",
             [username, password_e, email, major, year, gender, formattedDate, 0],
@@ -78,7 +77,7 @@ exports.processSignup = (req, res) => {
         else {
           return res.json({
             success: false,
-            message: "Email has already been registered!",
+            message: "Error registering email",
           });
         }
       }
@@ -103,7 +102,7 @@ exports.processLogin = (req, res) => {
   } else {
     const { email, password } = data;
     db.query(
-      "SELECT user_id, email, password FROM user WHERE email = ?",
+      "SELECT user_id, email, password, permissions FROM user WHERE email = ?",
       [email],
       function (error, results, fields) {
         //
@@ -126,6 +125,7 @@ exports.processLogin = (req, res) => {
             const token = generateAccessToken({ username: results[0].user_id });
             req.session.is_logined = true;
             req.session.nickname = results[0].user_id;
+            req.session.perm = results[0].permissions == 1;
             res.cookie("jwt", "", {
               expires: new Date(0),
               secure: process.env.NODE_ENV !== "development",

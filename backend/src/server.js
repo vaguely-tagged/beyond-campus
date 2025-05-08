@@ -22,7 +22,7 @@ app.use(
 );
 app.use(
   session({
-    secret: "~~~",
+    secret: process.env.TOKEN_SECRET,
     resave: false,
     saveUninitialized: true,
     store: new FileStore(),
@@ -31,12 +31,14 @@ app.use(
 app.use("/css", express.static(path.resolve("../public/styles")));
 app.use("/scripts", express.static(path.resolve("../public/scripts")));
 
-// example api routes
+// api routes
 require("./routes/routes.js")(app);
 // routes for user authorization
 require("./routes/authRouter.js")(app);
 // routes for admin
 require("./routes/adminRouter.js")(app);
+// routes for messages
+require("./routes/messageRouter.js")(app);
 
 
 //in general this is not the correct way to do this but for now this
@@ -69,9 +71,9 @@ app.get("/main", (req, res) => {
     res.redirect("/auth/login");
     return false;
   }
-
+  if (authCheck.isAdmin(req,res)) res.sendFile(path.resolve("../public/admin.html"));
   // If the user is authenticated, it generates an HTML response.?
-  res.sendFile(path.resolve("../public/main.html"));
+  else res.sendFile(path.resolve("../public/main.html"));
 });
 
 app.get("/question", (req, res) => {

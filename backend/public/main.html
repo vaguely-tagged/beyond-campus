@@ -13,6 +13,7 @@
         <div class="site-title col-xs-3">
           <h1>My Profile</h1>
         </div>
+        <a href="/messages"><div class="message-button">Messages</div></a>
         <a href="/auth/logout"><div class="logout-button">Log out</div></a>
       </div>
     </header>
@@ -39,6 +40,9 @@
         <li class="year"></li>
         <li class="registration_date"></li>
       </ul>
+      <br>
+      <button class="bio-button" id="blocked-button">View Blocked Users</button>
+      <div class="blocked-users" style="display:none"></div>
     </menu>
 
     <main>
@@ -77,5 +81,6 @@
     <script type="module" src="../scripts/getCookie.js"></script>
     <script type="module" src="../scripts/main.js"></script>
     <script type="module" src="../scripts/editBio.js"></script>
+    <script type="module" src="../scripts/blockedUsers.js"></script>
   </body>
 </html>
