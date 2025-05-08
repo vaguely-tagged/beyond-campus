@@ -110,13 +110,13 @@ CREATE TABLE `user` (
   `username` varchar(20) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `registration_date` date NOT NULL,
   `bio` text CHARACTER SET utf8mb4,
   `major` varchar(255) NOT NULL,
   `year` year NOT NULL,
   `gender` enum('Male','Female','Other','Prefer not to say') NOT NULL,
   `permissions` TINYINT(1),
   `reports` int DEFAULT 0,
+  `registration_date` date NOT NULL DEFAULT '2025-01-01',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -255,3 +255,19 @@ CREATE TABLE `blacklist` (
   `user_id` int NOT NULL,
   `email` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS `messages`;
+CREATE TABLE  `messages` (
+  `user_from` int NOT NULL,
+  `user_to` int NOT NULL,
+  `sent` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `body` TEXT NOT NULL,
+  KEY `FK_messages_user_from` (`user_from`),
+  KEY `FK_messages_user_to` (`user_to`),
+  CONSTRAINT `FK_messages_user_from` FOREIGN KEY (`user_from`)
+    REFERENCES `user` (`user_id`)
+    ON DELETE CASCADE,
+  CONSTRAINT `FK_messages_user_to` FOREIGN KEY (`user_to`)
+    REFERENCES `user` (`user_id`)
+    ON DELETE CASCADE
+);

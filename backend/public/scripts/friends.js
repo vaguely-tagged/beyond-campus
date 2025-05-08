@@ -119,7 +119,7 @@ window.addEventListener("load", () => {
                 })
                   .then((response) => response.json())
                   .then((result) => {
-                    if (window.confirm("Friend added!")) {
+                    if (window.confirm("Friend request sent!")) {
                       location.reload();
                     } else {
                       location.reload();

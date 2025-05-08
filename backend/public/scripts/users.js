@@ -41,7 +41,6 @@ window.addEventListener("load", () => {
                 .then((response) => response.json())
                 .then((data) => data.data)
                 .then((data) => {
-                    console.log(data);
                     data.forEach((x) => {
                         cardContainer.appendChild(createUserCard(x));
                     })
