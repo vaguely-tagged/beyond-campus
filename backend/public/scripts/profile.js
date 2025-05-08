@@ -41,7 +41,6 @@ window.addEventListener("load", () => {
         alert("Failed to get profile");
         window.location.href="/"
       }
-      console.log(userData);
       if (userData.permissions=="1") window.location.href="/";
       else document.body.style.visibility="visible";
       // Update the username and bio on the page with fetched data
@@ -123,8 +122,5 @@ window.addEventListener("load", () => {
           }
           else document.querySelector(".unblock-user-button").style.display="block";
         }));
-  } else {
-    console.error("JWT token not found in cookie");
-    window.location.href = "/auth/logout";
-  }
+      document.querySelector(".report-user-button").style.display="block";
 });

@@ -30,7 +30,7 @@ header {
   background: #842434;
   padding: 0 50px 0 50px;
   height: $header-height;
-  z-index: 999;
+  z-index: 5;
 }
 
 .container-fluid {
@@ -73,7 +73,7 @@ menu {
   width: 260px;
   position: fixed;
   padding: 0;
-  z-index: 10;
+  z-index: 4;
   height: calc(100% - 100px);
   overflow-y: auto;
   background: rgba(214, 214, 212, 0.2);
@@ -278,7 +278,7 @@ header {
   background: #842434;
   padding: 0 50px 0 50px;
   height: $header-height;
-  z-index: 999;
+  z-index: 5;
 }
 
 .container-fluid {
@@ -364,7 +364,9 @@ a {
 }
 
 .remove-friend-button,
-.message-friend-button {
+.message-friend-button,
+.reject-friend-button,
+.accept-friend-button {
   background-color: #842434;
   color: #fff;
   border: none;
@@ -376,7 +378,9 @@ a {
 }
 
 .remove-friend-button:hover,
-.message-friend-button:hover {
+.message-friend-button:hover,
+.reject-friend-button:hover,
+.accept-friend-button:hover {
   background-color: #741424;
 }
 
@@ -449,4 +453,58 @@ a {
 
 .blocked-users {
   background-color: white;
+}
+
+.prompt-box {
+  padding: 5px;
+  position:fixed;
+  margin:auto;
+  width: 40%;
+  height: fit-content;
+  border-radius: 8px; /* Rounded corners */
+  font-size: 16px; /* Adjust font size as needed */
+  background-color: #842434; /* Text color */
+  color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 10;
+}
+
+#promptTextarea {
+  display:block;
+  width: 80%; /* Use 100% width for a cleaner look */
+  margin-bottom: 20px;
+  height: 30%;
+  padding: 10px;
+  border: 2px solid #842434; /* Red border color */
+  border-radius: 8px; /* Rounded corners */
+  font-size: 16px; /* Adjust font size as needed */
+  color: #842434; /* Text color */
+  margin: auto;
+}
+
+#prompt-cancel {
+  position: relative;
+  left: 5%;
+  margin: 5px;
+  bottom: 5%;
+}
+
+#prompt-accept {
+  position: relative;
+  left: 25%;
+  bottom: 5%;
+  margin-bottom: 5px;
+}
+
+.cover {
+  z-index: 9;
+  position: fixed;
+  background-color: rgba(0,0,0,0.25);
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+  visibility: hidden;
 }
