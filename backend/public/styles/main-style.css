@@ -400,6 +400,7 @@ a {
 
 .popup {
   cursor: pointer;
+  position:relative;
 }
 
 .popup .popuptext {
@@ -411,8 +412,8 @@ a {
   border-radius: 6px;
   padding: 8px 0;
   position: absolute;
-  right: 0%;
-  margin-top:-100%
+  bottom: 120%;
+  left: 0%;
 }
 
 .popup .popuptext::after {

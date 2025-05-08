@@ -20,7 +20,6 @@ window.addEventListener("load", () => {
         .then((response) => {
             response.json()
             .then((data) => {
-                console.log(data);
                 const previews = document.querySelector(".previews");
                 const messages = data.data;
                 Object.keys(messages).forEach((user_id) => {
