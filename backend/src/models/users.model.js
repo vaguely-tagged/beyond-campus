@@ -3,7 +3,7 @@ const db = require("./db.js");
 const User = function (database) {};
 
 User.findById = (user_id, user, result) => {
-  db.query("SELECT user_id,username,bio,major,year,gender,permissions FROM user WHERE user_id=? AND user_id NOT IN (SELECT user_blocker FROM block WHERE user_blocked=?);", [user_id,user], (err, res) => {
+  db.query("SELECT user_id,username,bio,major,year,gender,permissions,registration_date FROM user WHERE user_id=? AND user_id NOT IN (SELECT user_blocker FROM block WHERE user_blocked=?);", [user_id,user], (err, res) => {
     if (err) {
       // console.log("error: ", err);
       result(err, null);
